@@ -1,0 +1,38 @@
+<resources>
+    <string name="app_name">Grin</string>
+    <string name="logo">TODO</string>
+    <string name="app_title">Hands Together</string>
+    <string name="slogan">Share more Don\'t waste</string>
+    <string name="user_pwd">Password</string>
+    <string name="username">Username</string>
+    //==========buttons
+    <string name="sign_in">Sign In to continue..</string>
+    <string name="forget_password">Forget Password?</string>
+    <string name="login">Login</string>
+    <string name="logout">Logout</string>
+    <string name="new_user">New User? SIGN UP</string>
+    <string name="sign_up">SIGN UP</string>
+    <string name="sign_up_msg">SignUp to start sharing.</string>
+    <string name="welcome">WELCOME</string>
+    <string name="UpdateProfile">Update</string>
+    <string name="locateMe">locate me</string>
+
+    /////////////////
+    <string name="admin_name">Hamida Hussaini</string>
+    <string name="admin_email">hamidahussaini792@gmail.com</string>
+    <string name="admin_mobile">+923121819360</string>
+    <string name="admin_pwd">success@123</string>
+
+    <string name="fname">First Name</string>
+    <string name="lname">Last Name</string>
+    <string name="email">Email</string>
+    <string name="pwd">Password</string>
+    <string name="phone">Mobile</string>
+    <string name="have_account">Already have an acoount? LogIn</string>
+    <string name="title_activity_maps">Map</string>
+    <string name="title_activity_my_location">Map</string>
+    <string name="title_activity_locate_me">Map</string>
+    <string name="title_activity_show_my_location">Map</string>
+    <string name="title_activity_show_m_e">Map</string>
+    <string name="title_activity_show_location">Map</string>
+</resources>

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#106C63</color>
+    <color name="colorPrimaryDark">#083A36</color>
+    <color name="colorAccent">#000000</color>
+    <color name="text_color">#000000</color>
+    <color name="button_background">#000000</color>
+    <color name="button_text">#fff</color>
+
+    <color name="backgroundColor">#EDF0F2</color>
+    //===========ButtonColor
+    <color name="btn_color">#FAAB1A</color>
+    //=========NavigationColor
+    <color name="navigation_back_color">#344955</color>
+    //======cardColor
+    <color name="item_card">#ffffff</color>
+    //========TextColor on light theme
+    <color name="textPrimary">#253840</color>
+    <color name="textPrimaryDark">#17262A</color>
+    <color name="textSecondry">#4A6572</color>
+    //======textColor on dark them
+    <color name="textOnDarkTheme">#FAAB1A</color>
+</resources>
