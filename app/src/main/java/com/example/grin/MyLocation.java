@@ -22,9 +22,13 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.widget.FrameLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.grin.Classes.ErrorMEssages;
+import com.example.grin.Classes.User;
+import com.example.grin.Classes.UserLocation;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApi;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -44,6 +48,17 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.gson.internal.$Gson$Preconditions;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class MyLocation extends FragmentActivity implements OnMapReadyCallback,
         LocationListener{
@@ -53,11 +68,11 @@ public class MyLocation extends FragmentActivity implements OnMapReadyCallback,
     private CameraPosition cameraPosition;
     private GoogleMap mMap;
 
-
     // The entry point to the Fused Location Provider.
     private FusedLocationProviderClient fusedLocationProviderClient;
 
     private LocationRequest mLocationRequest;
+    Double latitude=-33.8523341,longitude=151.2106085;
     LatLng latLng;
     // A default location (Sydney, Australia) and default zoom to use when location permission is
     // not granted.
@@ -76,35 +91,118 @@ public class MyLocation extends FragmentActivity implements OnMapReadyCallback,
     private static final String KEY_LOCATION = "location";
     GoogleApiClient mGoogleApiClient;
 
+    FirebaseAuth fAuth;
+    FirebaseDatabase rootnode;
+    DatabaseReference reference;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_location);
+
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
         latLng = defaultLocation;
-        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
-                .findFragmentById(R.id.map);
-        mapFragment.getMapAsync(this);
+        getUserLocaton();
+    }
+    public void getUserLocaton()
+    {
+        fAuth = FirebaseAuth.getInstance();
+        final String userId = fAuth.getCurrentUser().getUid();
+        rootnode=FirebaseDatabase.getInstance();
+        reference=rootnode.getReference("users").child(userId);
+
+        reference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if(snapshot.exists()) {
+                    longitude = snapshot.child("longitude").getValue(Double.class);
+                    latitude = snapshot.child("latitude").getValue(Double.class);
+                    latLng = new LatLng(latitude, longitude);
+                    showMeOnMap();
+                }
+                else
+                {
+                    latLng=defaultLocation;
+                    showMeOnMap();
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
+        getDeviceLocation();
+        showMeOnMap();
     }
     @Override
     public void onMapReady(GoogleMap map) {
         mMap = map;
-
         // Add a marker in Sydney and move the camera
         if (latLng != null) {
 
             mMap.addMarker(new MarkerOptions().position(latLng).title(""));
             mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 16F));
+
         }
 
     }
+    public void saveLocation()
+    {
 
+            fAuth = FirebaseAuth.getInstance();
+            final String userId = fAuth.getCurrentUser().getUid();
+            rootnode= FirebaseDatabase.getInstance();
+            reference=rootnode.getReference("users").child(userId);
+            UserLocation saveLocaton=new UserLocation(longitude,latitude);
+            reference.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    Map<String, Object> postValues = new HashMap<String,Object>();
+                    for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                        postValues.put(snapshot.getKey(),snapshot.getValue());
+                    }
+                    postValues.put("longitude", longitude);
+                    postValues.put("latitude", latitude);
+                    reference.updateChildren(postValues);
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+
+                }
+            });
+           /* reference.child(userId).setValue(saveLocaton).addOnCompleteListener(new OnCompleteListener<Void>() {
+                @Override
+                public void onComplete(@NonNull Task<Void> task) {
+                    if(task.isSuccessful())
+                    {
+                        showMessage("Saving Location","Saving Location to firebase.");
+
+                    }
+                    else
+                    {
+                        showMessage("Error Saving",""+task.getException().toString());
+
+                    }
+                }
+            });*/
+
+    }
+    public void saveHomeLocation(View view) {
+
+        saveLocation();
+
+    }
     public void locateMe(View view) {
         if (!locationPermissionGranted) {
             getLocationPermission();
         }
         getDeviceLocation();
     }
+
+
+
     public void showMeOnMap()
     {
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
@@ -151,9 +249,10 @@ public class MyLocation extends FragmentActivity implements OnMapReadyCallback,
                                     // Got last known location. In some rare situations this can be null.
                                     if (location != null) {
                                         lastKnownLocation=location;
+                                        latitude=location.getLatitude();
+                                        longitude=location.getLongitude();
                                         latLng=new LatLng(location.getLatitude(), location.getLongitude());
                                         showMeOnMap();
-                                        mGoogleApiClient.disconnect();
                                     }
                                     else
                                     {
@@ -251,6 +350,8 @@ public class MyLocation extends FragmentActivity implements OnMapReadyCallback,
         lastKnownLocation=location;
         if(location!=null)
         {
+            latitude=location.getLatitude();
+            longitude=location.getLongitude();
            latLng = new LatLng(lastKnownLocation.getLongitude(), lastKnownLocation.getAltitude());
         }
         else {

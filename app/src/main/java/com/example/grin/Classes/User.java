@@ -21,6 +21,7 @@ import com.google.firebase.auth.FirebaseAuthException;
 import com.google.firebase.auth.FirebaseAuthUserCollisionException;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.Exclude;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.HashMap;
@@ -32,6 +33,7 @@ public class User {
     String errorMsg;
     String firstName,lastName,email,mobile,password,userId,location;
     boolean mobileVerified,emailVerified;
+    double longitude,latitude;
     public User() {
     }
 
@@ -40,6 +42,17 @@ public class User {
         this.firstName = firstName;
         this.lastName = LastName;
         this.mobile = mobile;
+    }
+    public User(Double longitude,Double latitude) {
+        this.longitude = longitude;
+        this.latitude = latitude;
+    }
+    @Exclude
+    public Map<String, Object> toMap() {
+        HashMap<String, Object> result = new HashMap<>();
+        result.put("longitude", longitude);
+        result.put("latitude", latitude);
+        return result;
     }
     public String getErrorMsg() {
         return errorMsg;

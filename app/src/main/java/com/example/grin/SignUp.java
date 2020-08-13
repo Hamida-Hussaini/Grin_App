@@ -194,7 +194,6 @@ public class SignUp extends AppCompatActivity {
                 final String lName = lastName.getEditText().getText().toString().trim();
                 final String phone = mobile.getEditText().getText().toString().trim();
                 fAuth = FirebaseAuth.getInstance();
-                fStore=FirebaseFirestore.getInstance();
                 fAuth.createUserWithEmailAndPassword(em,pwd).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
