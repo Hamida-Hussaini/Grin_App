@@ -193,7 +193,7 @@ public class MyLocation extends FragmentActivity implements OnMapReadyCallback {
 
     }
 
-    private Address getAddressFromLatLng(LatLng latLng){
+   /* private Address getAddressFromLatLng(LatLng latLng){
         Geocoder geocoder=new Geocoder(MyLocation.this);
         List<Address> addresses;
         try {
@@ -211,7 +211,7 @@ public class MyLocation extends FragmentActivity implements OnMapReadyCallback {
             return null;
         }
 
-    }
+    }*/
     // Create a new token for the autocomplete session. Pass this to FindAutocompletePredictionsRequest,
     // and once again when the user makes a selection (for example when calling fetchPlace()).
    public void geoLocate(){
