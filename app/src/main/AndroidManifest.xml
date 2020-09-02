@@ -34,7 +34,9 @@
 
         <activity
             android:name=".MyLocation"
+            android:windowSoftInputMode="stateVisible|adjustResize"
             android:label="@string/title_activity_my_location" />
+
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
              (See the file "res/values/google_maps_api.xml").

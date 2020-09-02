@@ -9,49 +9,33 @@ import androidx.fragment.app.FragmentActivity;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
-import android.app.usage.UsageEvents;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentSender;
-import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
-import android.location.LocationManager;
 
-import android.media.audiofx.Equalizer;
 import android.os.Bundle;
-import android.provider.Settings;
 import android.util.Log;
 import android.view.KeyEvent;
-import android.view.Menu;
 import android.view.View;
-import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.AutoCompleteTextView;
-import android.widget.EditText;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.grin.Classes.ErrorMEssages;
-import com.example.grin.Classes.User;
 import com.example.grin.Classes.UserLocation;
 import com.example.grin.adapter.PlaceAutoSuggestAdapter;
-import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.api.ApiException;
-import com.google.android.gms.common.api.GoogleApi;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.ResolvableApiException;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationCallback;
-import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
@@ -62,8 +46,6 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
-import com.google.android.gms.maps.model.BitmapDescriptorFactory;
-import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -71,23 +53,13 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
-/*import com.google.android.libraries.places.api.Places;
-import com.google.android.libraries.places.api.model.AutocompletePrediction;
-import com.google.android.libraries.places.api.model.AutocompleteSessionToken;
-import com.google.android.libraries.places.api.model.RectangularBounds;
-import com.google.android.libraries.places.api.model.TypeFilter;
-import com.google.android.libraries.places.api.net.FindAutocompletePredictionsRequest;
-import com.google.android.libraries.places.api.net.FindAutocompletePredictionsResponse;
-import com.google.android.libraries.places.api.net.PlacesClient;*/
+
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.gson.internal.$Gson$Preconditions;
-
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -137,16 +109,8 @@ public class MyLocation extends FragmentActivity implements OnMapReadyCallback {
         mSearchText.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                latLng=getLatLngFromAddress(mSearchText.getText().toString());
-                if(latLng!=null) {
-                    Toast.makeText(MyLocation.this, "Location selected", Toast.LENGTH_SHORT).show();
-                    mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 16F));
-                    hideSoftKeyboard();
-                }
-                else {
-                    Log.d("Lat Lng","Lat Lng Not Found");
-                }
-
+                geoLocate();
+                hideSoftKeyboard();
             }
         });
 
@@ -156,62 +120,18 @@ public class MyLocation extends FragmentActivity implements OnMapReadyCallback {
                 if(actionId== EditorInfo.IME_ACTION_SEARCH
                         || keyEvent.getKeyCode()== KeyEvent.ACTION_DOWN) {
                     geoLocate();
-
+                    hideSoftKeyboard();
                 }
                 return  false;
             }
 
 
         });
+
+
         getUserLocaton();
 
     }
-    private LatLng getLatLngFromAddress(String address){
-
-        Geocoder geocoder=new Geocoder(MyLocation.this);
-        List<Address> addressList;
-
-        try {
-            Log.d(TAG,"item selected");
-
-            addressList = geocoder.getFromLocationName(address, 1);
-            if(addressList!=null){
-                Address singleaddress=addressList.get(0);
-                latitude=singleaddress.getLatitude();
-                longitude=singleaddress.getLongitude();
-                latLng=new LatLng(singleaddress.getLatitude(),singleaddress.getLongitude());
-                return latLng;
-            }
-            else{
-                return null;
-            }
-        }
-        catch (Exception e){
-            e.printStackTrace();
-            return null;
-        }
-
-    }
-
-   /* private Address getAddressFromLatLng(LatLng latLng){
-        Geocoder geocoder=new Geocoder(MyLocation.this);
-        List<Address> addresses;
-        try {
-            addresses = geocoder.getFromLocation(latLng.latitude, latLng.longitude, 5);
-            if(addresses!=null){
-                Address address=addresses.get(0);
-                return address;
-            }
-            else{
-                return null;
-            }
-        }
-        catch (Exception e){
-            e.printStackTrace();
-            return null;
-        }
-
-    }*/
     // Create a new token for the autocomplete session. Pass this to FindAutocompletePredictionsRequest,
     // and once again when the user makes a selection (for example when calling fetchPlace()).
    public void geoLocate(){
@@ -298,14 +218,21 @@ public class MyLocation extends FragmentActivity implements OnMapReadyCallback {
         // Add a marker in Sydney and move the camera
         if (latLng != null) {
             mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 16F));
-            if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-                return;
-            }
-            mMap.setMyLocationEnabled(true);
-            mMap.getUiSettings().setMyLocationButtonEnabled(false);
-
         }
+        mMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
+            @Override
+            public void onMapClick(LatLng latLong) {
 
+                latLng=latLong;
+                latitude=latLong.latitude;
+                longitude= latLong.longitude;
+
+                // Clears the previously touched position
+                mMap.clear();
+                // Animating to the touched position
+                mMap.animateCamera(CameraUpdateFactory.newLatLng(latLng));
+            }
+        });
     }
     public void saveLocation()
     {
@@ -314,8 +241,10 @@ public class MyLocation extends FragmentActivity implements OnMapReadyCallback {
             final String userId = fAuth.getCurrentUser().getUid();
             rootnode= FirebaseDatabase.getInstance();
             reference=rootnode.getReference("users").child(userId);
+            latLng=mMap.getProjection().getVisibleRegion().latLngBounds.getCenter();
+            longitude=latLng.longitude;
+            latitude=latLng.latitude;
             UserLocation saveLocaton=new UserLocation(longitude,latitude);
-
             reference.addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -326,6 +255,7 @@ public class MyLocation extends FragmentActivity implements OnMapReadyCallback {
                     postValues.put("longitude", longitude);
                     postValues.put("latitude", latitude);
                     reference.updateChildren(postValues);
+                    Toast.makeText(MyLocation.this, "Location Saved successfully.", Toast.LENGTH_SHORT).show();
                 }
 
                 @Override
