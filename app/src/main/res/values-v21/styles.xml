@@ -3,9 +3,15 @@
 
     <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Customize your theme here. -->
-        <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">@color/colorAccent</item>
-        <item name="android:windowContentTransitions">true</item>
+        <item name="colorPrimary">@color/textPrimary</item>
+        <item name="colorPrimaryDark">@color/textPrimary</item>
+        <item name="colorAccent">@color/textPrimary</item>
+
+    </style>
+    <style name="ToolbarTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="android:statusBarColor">#00000000</item>
+        <item name="android:textColorPrimary">@color/navButtons</item>
+        <item name="android:textColorSecondary">@color/navButtons</item>
+        <item name="android:textColor">@color/navButtons</item>
     </style>
 </resources>

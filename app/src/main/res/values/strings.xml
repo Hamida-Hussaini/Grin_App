@@ -1,10 +1,14 @@
 <resources>
     <string name="app_name">Grin</string>
+    <string name="API_Key">AIzaSyDHupuVj0WHj-qnhLIpgcCyRm4ezkWe4Jk</string>
     <string name="logo">TODO</string>
-    <string name="app_title">Hands Together</string>
+    <string name="app_title">Grin</string>
     <string name="slogan">Share more Don\'t waste</string>
     <string name="user_pwd">Password</string>
     <string name="username">Username</string>
+    <string name="location">Location</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
     //==========buttons
     <string name="sign_in">Sign In to continue..</string>
     <string name="forget_password">Forget Password?</string>

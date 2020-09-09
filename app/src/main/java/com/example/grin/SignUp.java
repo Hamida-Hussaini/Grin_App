@@ -44,12 +44,12 @@ public class SignUp extends AppCompatActivity {
     DatabaseReference reference;
     private Boolean validateFirstName() {
         String val = firstName.getEditText().getText().toString();
-        String noWhiteSpace = "\\A\\w{4,20}\\z";
+        String noWhiteSpace = "\\A\\w{3,20}\\z";
         if (val.isEmpty()) {
             firstName.setError("Field cannot be empty");
             return false;
-        } else if (val.length() >= 15 || val.length() < 3) {
-            firstName.setError("First Name should be between 3-15 characters");
+        } else if (val.length() >= 20 || val.length() < 3) {
+            firstName.setError("First Name should be between 3-20 characters");
             return false;
         } else if (!val.matches(noWhiteSpace)){
             firstName.setError("White Spaces are not allowed");

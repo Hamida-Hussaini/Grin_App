@@ -30,7 +30,10 @@ public class MainActivity extends AppCompatActivity {
 
 
         try {
-            if(user1.checkIfUserExist())
+            Intent intent=new Intent(getApplicationContext(),DashBoard.class);
+            startActivity(intent);
+            finish();
+           /* if(user1.checkIfUserExist())
             {
                 Intent intent=new Intent(getApplicationContext(),DashBoard.class);
                 startActivity(intent);
@@ -42,7 +45,7 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
                 finish();
 
-            }
+            }*/
         } catch (Exception e) {
 
         }

@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_home"
+            android:title="Home"
+            android:icon="@drawable/ic_home">
+        </item>
+        <item
+            android:id="@+id/nav_guide"
+            android:title="Guide"
+            android:icon="@drawable/ic_guide_me">
+        </item>
+        <item
+            android:id="@+id/nav_impact"
+            android:title="Impact"
+            android:icon="@drawable/ic_my_impact">
+        </item>
+        <item
+            android:id="@+id/nav_listing"
+            android:title="My Listing"
+            android:icon="@drawable/ic_my_listing">
+        </item>
+        <item
+            android:id="@+id/nav_profile"
+            android:title="Profile"
+            android:icon="@drawable/ic_my_profile">
+        </item>
+        <item
+            android:id="@+id/nav_notification"
+            android:title="Notification"
+            android:icon="@drawable/ic_notification">
+        </item>
+        <item
+            android:id="@+id/nav_location"
+            android:title="Location"
+            android:icon="@drawable/ic_location">
+        </item>
+        <item
+            android:id="@+id/nav_users_near_me"
+            android:title="Users near me"
+            android:icon="@drawable/ic_users_near_me">
+        </item>
+        <item
+            android:id="@+id/nav_logout"
+            android:title="Logout"
+            android:icon="@drawable/ic_logout">
+        </item>
+
+    </group>
+</menu>
