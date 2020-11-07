@@ -7,52 +7,84 @@
     android:background="@color/backgroundColor"
     tools:context=".MainActivity">
 
-    <ImageView
-        android:id="@+id/monogram"
-        android:layout_width="291dp"
-        android:layout_height="319dp"
-        android:layout_marginStart="10dp"
-        android:layout_marginLeft="10dp"
-        android:layout_marginTop="60dp"
-        android:layout_marginRight="10dp"
-        android:contentDescription="@string/app_title"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/sharing" />
 
     <TextView
         android:id="@+id/title"
-        android:layout_width="0dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="10dp"
-        android:layout_marginTop="96dp"
-        android:layout_marginRight="10dp"
-        android:fontFamily="@font/bangers_regular"
+        android:layout_marginTop="16dp"
+        android:fontFamily="@font/work_sans_bold"
         android:gravity="center_horizontal|center_vertical"
         android:text="@string/app_title"
-        android:textSize="50sp"
+        android:textColor="@color/textPrimaryDark"
+        android:textSize="40sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.476"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/monogram" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/slogan"
-        android:layout_width="0dp"
+        android:layout_width="wrap_content"
         android:layout_height="46dp"
-        android:layout_marginStart="20dp"
-        android:layout_marginLeft="20dp"
-        android:layout_marginEnd="20dp"
-        android:layout_marginRight="20dp"
+        android:fontFamily="@font/work_sans_medium"
         android:gravity="center_horizontal|center_vertical"
         android:text="@string/slogan"
-        android:textSize="30sp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:textColor="@color/textPrimary"
+        android:textSize="25sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintHorizontal_bias="0.504"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/title"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintTop_toBottomOf="@+id/title" />
+
+    <Button
+            android:id="@+id/btnMainSignUp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginBottom="70dp"
+            android:background="@drawable/nav_button_border"
+            android:fontFamily="@font/work_sans_medium"
+            android:includeFontPadding="false"
+            android:text="Sign up with Email"
+            android:textColor="@color/navButtons"
+            android:textSize="17dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintVertical_bias="0.957" />
+
+    <TextView
+        android:id="@+id/alreadyHaveAccount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="left|center_vertical"
+        android:text="@string/already_have_acccount"
+        android:textColor="@color/textPrimaryDark"
+        android:textSize="15sp"
+        android:fontFamily="@font/work_sans_medium"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/btnMainSignUp"
+        app:layout_constraintTop_toBottomOf="@+id/btnMainSignUp"
+        app:layout_constraintVertical_bias="0.529" />
+
+    <Button
+        android:id="@+id/btnMainLogin"
+        android:layout_width="80dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="@drawable/yellow_border"
+        android:fontFamily="@font/work_sans_medium"
+        android:includeFontPadding="false"
+        android:text="@string/login"
+        android:textColor="@color/textPrimary"
+        android:textSize="15dp"
+        app:layout_constraintBaseline_toBaselineOf="@+id/alreadyHaveAccount"
+        app:layout_constraintEnd_toEndOf="@+id/btnMainSignUp"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toEndOf="@+id/alreadyHaveAccount" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

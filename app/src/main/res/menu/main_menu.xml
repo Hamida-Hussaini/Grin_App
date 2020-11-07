@@ -9,7 +9,7 @@
         <item
             android:id="@+id/nav_guide"
             android:title="Guide"
-            android:icon="@drawable/ic_guide_me">
+            android:icon="@drawable/ic_guide">
         </item>
         <item
             android:id="@+id/nav_impact"
@@ -29,7 +29,7 @@
         <item
             android:id="@+id/nav_notification"
             android:title="Notification"
-            android:icon="@drawable/ic_notification">
+            android:icon="@drawable/ic_notifications">
         </item>
         <item
             android:id="@+id/nav_location"

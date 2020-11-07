@@ -2,16 +2,20 @@
     <string name="app_name">Grin</string>
     <string name="API_Key">AIzaSyDHupuVj0WHj-qnhLIpgcCyRm4ezkWe4Jk</string>
     <string name="logo">TODO</string>
-    <string name="app_title">Grin</string>
-    <string name="slogan">Share more Don\'t waste</string>
+    <string name="app_title">GRIN</string>
+    <string name="slogan">Share more, Don\'t waste</string>
     <string name="user_pwd">Password</string>
     <string name="username">Username</string>
     <string name="location">Location</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="menu_home">Home</string>
+    <string name="menu_impact">Impact</string>
+    <string name="menu_guide">Guide</string>
+    <string name="menu_listing">My Listing</string>
     //==========buttons
-    <string name="sign_in">Sign In to continue..</string>
-    <string name="forget_password">Forget Password?</string>
+    <string name="sign_in">Sign In to continue...</string>
+    <string name="forget_password">Forgotten Password?</string>
     <string name="login">Login</string>
     <string name="logout">Logout</string>
     <string name="new_user">New User? SIGN UP</string>
@@ -19,7 +23,7 @@
     <string name="sign_up_msg">SignUp to start sharing.</string>
     <string name="welcome">WELCOME</string>
     <string name="UpdateProfile">Update</string>
-    <string name="locateMe">locate me</string>
+    <string name="locateMe">Locate Me</string>
 
     /////////////////
     <string name="admin_name">Hamida Hussaini</string>
@@ -32,12 +36,85 @@
     <string name="email">Email</string>
     <string name="pwd">Password</string>
     <string name="phone">Mobile</string>
-    <string name="have_account">Already have an acoount? LogIn</string>
+    <string name="have_account">Already have an account? LogIn</string>
+    <string name="already_have_acccount">Already have an account? </string>
     <string name="title_activity_maps">Map</string>
     <string name="title_activity_my_location">Map</string>
     <string name="title_activity_locate_me">Map</string>
     <string name="title_activity_show_my_location">Map</string>
     <string name="title_activity_show_m_e">Map</string>
     <string name="title_activity_show_location">Map</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="take_a_photo">take a photo</string>
+    <string name="todo">TODO</string>
+    <string name="showallusers">Show All Users</string>
+    <string name="list_for">List For</string>
+    <string name="add_listing">Add Listing</string>
+    <string name="pick_up_location">Pick up Location</string>
+    <string name="pick_up_time">Pick up time</string>
+    <string name="quality">Quality</string>
+    <string name="pick_up_date">Pick up Date</string>
+    <string name="quantity">Quantity</string>
+    <string name="e_g_quality_quantity_use_by_date">e.g. Quality, quantity, use by date</string>
+    <string name="e_g_product_name">e.g. Product Name</string>
+    <string name="description">Description</string>
+    <string name="select_type">Select Type</string>
+    <string name="wanted_listing">Wanted Listing</string>
+    <string name="title">Title</string>
+    <string name="food">Food</string>
+    <string name="non_food">Non_Food</string>
+    <string name="upload_from_gallery">Upload from gallery</string>
+
+    <string-array name="list_duration">
+        <item>1 Hour</item>
+        <item>2 Hour</item>
+        <item>3 Hour</item>
+        <item>4 Hour</item>
+        <item>6 Hour</item>
+        <item>8 Hour</item>
+        <item>1 Day</item>
+        <item>2 Day</item>
+        <item>3 Day</item>
+        <item>4 Day</item>
+        <item>5 Day</item>
+        <item>6 Day</item>
+        <item>7 Day</item>
+        <item>8 Day</item>
+        <item>9 Day</item>
+        <item>10 Day</item>
+        <item>11 Day</item>
+        <item>12 Day</item>
+        <item>14 Day</item>
+        <item>15 Day</item>
+        <item>16 Day</item>
+        <item>17 Day</item>
+        <item>18 Day</item>
+        <item>19 Day</item>
+        <item>20 Day</item>
+        <item>21 Day</item>
+        <item>22 Day</item>
+        <item>23 Day</item>
+        <item>24 Day</item>
+        <item>25 Day</item>
+        <item>26 Day</item>
+        <item>27 Day</item>
+        <item>28 Day</item>
+        <item>29 Day</item>
+    </string-array>
+    <string-array name="show_all_users_duration">
+        <item>No Delay</item>
+        <item>1 Hour</item>
+        <item>2 Hour</item>
+        <item>3 Hour</item>
+        <item>4 Hour</item>
+        <item>6 Hour</item>
+        <item>8 Hour</item>
+        <item>1 Day</item>
+        <item>2 Day</item>
+        <item>3 Day</item>
+        <item>4 Day</item>
+        <item>5 Day</item>
+    </string-array>
 
 </resources>

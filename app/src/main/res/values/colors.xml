@@ -11,13 +11,17 @@
     //===========ButtonColor
     <color name="btn_color">#FAAB1A</color>
     //=========NavigationColor
-    <color name="navigation_back_color">#344955</color>
+   <!-- <color name="navigation_back_color">#344955</color>-->
+    <color name="navigation_back_color">#253840</color>
     //======cardColor
     <color name="item_card">#ffffff</color>
     //========TextColor on light theme
     <color name="textPrimary">#253840</color>
     <color name="textPrimaryDark">#17262A</color>
     <color name="textSecondry">#4A6572</color>
+    <color name="textError">#CF0817</color>
+   <!-- <color name="navText">#BBC0C4</color>-->
+        <color name="navText">#BBC0C4</color>
     //======textColor on dark them
     <color name="textOnDarkTheme">#FAAB1A</color>
     <color name="navButtons">#F9AA33</color>

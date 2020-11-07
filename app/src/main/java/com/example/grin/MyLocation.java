@@ -24,6 +24,8 @@ import android.location.Geocoder;
 import android.location.Location;
 
 import android.os.Bundle;
+import android.os.CountDownTimer;
+import android.os.Handler;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.MenuItem;
@@ -33,6 +35,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.AutoCompleteTextView;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -76,7 +79,8 @@ import java.util.Map;
 public class MyLocation extends AppCompatActivity implements OnMapReadyCallback,NavigationView.OnNavigationItemSelectedListener {
 
     private static final String TAG = MyLocation.class.getSimpleName();
-
+    ProgressBar progressBar;
+    ImageView marker;
     private GoogleMap mMap;
 
     // The entry point to the Fused Location Provider.
@@ -113,7 +117,8 @@ public class MyLocation extends AppCompatActivity implements OnMapReadyCallback,
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_location);
 
-        drawerLayout=findViewById(R.id.drawer_layout);
+        progressBar = findViewById(R.id.loginProgress);
+      drawerLayout=findViewById(R.id.drawer_layout);
         navigationView=findViewById(R.id.nav_view);
         toolbar = findViewById(R.id.main_toolbar);
         toolbar.setTitle("My Location");
@@ -130,6 +135,7 @@ public class MyLocation extends AppCompatActivity implements OnMapReadyCallback,
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
         latLng = defaultLocation;
         mSearchText=(AutoCompleteTextView) findViewById(R.id.input_search);
+        marker=findViewById(R.id.marker);
         mSearchText.setAdapter(new PlaceAutoSuggestAdapter(MyLocation.this,android.R.layout.simple_list_item_1));
         mSearchText.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -183,7 +189,7 @@ public class MyLocation extends AppCompatActivity implements OnMapReadyCallback,
                 break;
             case R.id.nav_logout:
                 FirebaseAuth.getInstance().signOut();
-                Intent loginIntent=new Intent(getApplicationContext(),Login.class);
+                Intent loginIntent=new Intent(getApplicationContext(),LoginUser.class);
                 startActivity(loginIntent);
                 finish();
 
@@ -195,7 +201,8 @@ public class MyLocation extends AppCompatActivity implements OnMapReadyCallback,
     // Create a new token for the autocomplete session. Pass this to FindAutocompletePredictionsRequest,
     // and once again when the user makes a selection (for example when calling fetchPlace()).
    public void geoLocate(){
-
+       marker.setVisibility(View.INVISIBLE);
+       progressBar.setVisibility(View.VISIBLE);
        Log.d(TAG,"geoLocate: geoLocating");
         String searchString=mSearchText.getText().toString();
         Geocoder geocoder=new Geocoder(MyLocation.this);
@@ -213,8 +220,7 @@ public class MyLocation extends AppCompatActivity implements OnMapReadyCallback,
             latitude=address.getLatitude();
             longitude=address.getLongitude();
             latLng=new LatLng(latitude,longitude);
-            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 16F));
-           // Log.d(TAG,"geoLocate: found a location: " +address.toString());
+            showMeOnMap();
             hideSoftKeyboard();
 
         }
@@ -231,12 +237,15 @@ public class MyLocation extends AppCompatActivity implements OnMapReadyCallback,
     }
 
     public void getUserLocaton() {
+
         fAuth = FirebaseAuth.getInstance();
         if(fAuth.getCurrentUser()!=null) {
+            progressBar.setVisibility(View.VISIBLE);
+            marker.setVisibility(View.INVISIBLE);
+            Log.d(TAG,"getUserLocation: getting Location");
             final String userId = fAuth.getCurrentUser().getUid();
             rootnode = FirebaseDatabase.getInstance();
             reference = rootnode.getReference("users").child(userId);
-
             reference.addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -246,12 +255,18 @@ public class MyLocation extends AppCompatActivity implements OnMapReadyCallback,
                             longitude = snapshot.child("longitude").getValue(Double.class);
                             latitude = snapshot.child("latitude").getValue(Double.class);
                             latLng = new LatLng(latitude, longitude);
+
+                            Log.d(TAG,"getUserLocation: Location Found."+latLng);
                             showMeOnMap();
                         } else {
+                            Log.d(TAG,"getUserLocation: Location Not Found."+latLng);
+
                             latLng = defaultLocation;
                             showMeOnMap();
                         }
                     } else {
+                        Log.d(TAG,"getUserLocation: User Not Found"+latLng);
+
                         latLng = defaultLocation;
                         showMeOnMap();
                     }
@@ -265,6 +280,8 @@ public class MyLocation extends AppCompatActivity implements OnMapReadyCallback,
         }
         else
         {
+
+            Log.d(TAG,"getUserLocation: User Not Logged In"+latLng);
             latLng = defaultLocation;
             showMeOnMap();
         }
@@ -274,6 +291,7 @@ public class MyLocation extends AppCompatActivity implements OnMapReadyCallback,
     }
 
     public void showMeOnMap() {
+
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
@@ -282,10 +300,19 @@ public class MyLocation extends AppCompatActivity implements OnMapReadyCallback,
     @Override
     public void onMapReady(GoogleMap map) {
         mMap = map;
-        final Marker marker;
         // Add a marker in Sydney and move the camera
         if (latLng != null) {
-            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 16F));
+            int TIME = 1000; //5000 ms (5 Seconds)
+
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng,16));
+                    progressBar.setVisibility(View.INVISIBLE);
+                    marker.setVisibility(View.VISIBLE);
+                }
+            }, TIME);
+
         }
        /* mMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
             @Override
@@ -305,7 +332,8 @@ public class MyLocation extends AppCompatActivity implements OnMapReadyCallback,
     public void saveLocation()
     {
 
-            fAuth = FirebaseAuth.getInstance();
+        fAuth = FirebaseAuth.getInstance();
+        if(fAuth.getCurrentUser()!=null) {
             final String userId = fAuth.getCurrentUser().getUid();
             rootnode= FirebaseDatabase.getInstance();
             reference=rootnode.getReference("users").child(userId);
@@ -323,6 +351,7 @@ public class MyLocation extends AppCompatActivity implements OnMapReadyCallback,
                     postValues.put("longitude", longitude);
                     postValues.put("latitude", latitude);
                     reference.updateChildren(postValues);
+                    progressBar.setVisibility(View.INVISIBLE);
                     Toast.makeText(MyLocation.this, "Location Saved successfully.", Toast.LENGTH_SHORT).show();
                 }
 
@@ -331,19 +360,31 @@ public class MyLocation extends AppCompatActivity implements OnMapReadyCallback,
 
                 }
             });
+        }
+        else
+        {
+            Toast.makeText(MyLocation.this, "User not found", Toast.LENGTH_SHORT).show();
+        }
+
     }
     public void saveHomeLocation(View view) {
-
+        marker.setVisibility(View.VISIBLE);
+        progressBar.setVisibility(View.VISIBLE);
         saveLocation();
 
     }
     public void locateMe(View view) {
+        marker.setVisibility(View.INVISIBLE);
+        progressBar.setVisibility(View.VISIBLE);
         if (!locationPermissionGranted) {
+
             getLocationPermission();
         }
         else {
             if(isLocationEnable)
             {
+
+                Log.d(TAG,"locateMe:");
                 getCurrentLocation();
             }
             else
@@ -392,11 +433,14 @@ public class MyLocation extends AppCompatActivity implements OnMapReadyCallback,
 
             if(isLocationEnable)
             {
+                marker.setVisibility(View.INVISIBLE);
+                progressBar.setVisibility(View.VISIBLE);
                 getCurrentLocation();
 
             }
             else
             {
+
                 checkIfLocationEnabled();
             }
         }
@@ -418,6 +462,8 @@ public class MyLocation extends AppCompatActivity implements OnMapReadyCallback,
             @Override
             public void onSuccess(LocationSettingsResponse locationSettingsResponse) {
                 isLocationEnable=true;
+                marker.setVisibility(View.INVISIBLE);
+                progressBar.setVisibility(View.VISIBLE);
                 getCurrentLocation();
             }
         });
@@ -445,6 +491,8 @@ public class MyLocation extends AppCompatActivity implements OnMapReadyCallback,
             if(resultCode==RESULT_OK)
             {
                 isLocationEnable=true;
+                marker.setVisibility(View.INVISIBLE);
+                progressBar.setVisibility(View.VISIBLE);
                 getCurrentLocation();
             }
             else
@@ -456,6 +504,8 @@ public class MyLocation extends AppCompatActivity implements OnMapReadyCallback,
     @SuppressLint("MissingPermission")
     private void getCurrentLocation()
     {
+        marker.setVisibility(View.INVISIBLE);
+        progressBar.setVisibility(View.VISIBLE);
         fusedLocationProviderClient.getLastLocation()
                 .addOnCompleteListener(new OnCompleteListener<Location>() {
                     @SuppressLint("MissingPermission")
@@ -466,10 +516,15 @@ public class MyLocation extends AppCompatActivity implements OnMapReadyCallback,
                             lastKnownLocation = task.getResult();
                             if(lastKnownLocation != null)
                             {
+                                Log.d(TAG,"Location Found");
                                 latitude=lastKnownLocation.getLatitude();
                                 longitude=lastKnownLocation.getLongitude();
                                 latLng=new LatLng(lastKnownLocation.getLatitude(), lastKnownLocation.getLongitude());
-                                showMeOnMap();
+
+                                 showMeOnMap();
+
+
+
                             }
                             else
                             {
@@ -490,7 +545,9 @@ public class MyLocation extends AppCompatActivity implements OnMapReadyCallback,
                                         latitude=lastKnownLocation.getLatitude();
                                         longitude=lastKnownLocation.getLongitude();
                                         latLng=new LatLng(lastKnownLocation.getLatitude(), lastKnownLocation.getLongitude());
+
                                         showMeOnMap();
+                                        Log.d(TAG,"LocationUpdate:Location Found");
                                         fusedLocationProviderClient.removeLocationUpdates(locationCallback);
                                     }
                                 };
@@ -499,6 +556,7 @@ public class MyLocation extends AppCompatActivity implements OnMapReadyCallback,
                         }
                         else
                         {
+
                             Toast.makeText(MyLocation.this,"Unable to get last location",Toast.LENGTH_SHORT).show();
                         }
                     }

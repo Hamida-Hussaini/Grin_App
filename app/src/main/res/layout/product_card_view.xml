@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/backgroundColor">
+    <com.google.android.material.card.MaterialCardView
+        android:layout_width="match_parent"
+        android:layout_height="130dp"
+        android:layout_marginBottom="5dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="5dp"
+        app:cardBackgroundColor="@color/item_card"
+        app:cardCornerRadius="7dp">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <ImageView
+                android:id="@+id/item_image"
+                android:layout_width="130dp"
+                android:layout_height="match_parent"
+                android:src="@drawable/bottle"/>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="right"
+                android:background="#FFFFFF"
+                android:layout_toRightOf="@+id/item_image"
+                android:orientation="vertical"
+                android:paddingTop="0dp"
+                android:padding="8dp">
+
+                <TextView
+                    android:id="@+id/item_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="25dp"
+                    android:text="Vase"
+                    android:fontFamily="@font/work_sans_bold"
+                    android:textColor="@color/textPrimaryDark"
+                    android:textAppearance="?attr/textAppearanceHeadline6" />
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginTop="5dp"
+                    android:gravity="center">
+
+                    <de.hdodenhof.circleimageview.CircleImageView
+                        android:id="@+id/item_profile_picture"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:src="@drawable/admin_pic"
+                        app:civ_border_color="#00000000"
+                        app:civ_border_width="2dp" />
+                   <!-- <ImageView
+
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:background="@drawable/white_border"
+                        android:src="@drawable/admin_pic"/>-->
+                    <TextView
+                        android:id="@+id/item_user"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="2dp"
+                        android:fontFamily="@font/work_sans_regular"
+                        android:textColor="@color/textPrimary"
+                        android:text="Hamida Hussaini"
+                        android:textSize="15dp" />
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginTop="5dp"
+                    android:gravity="center_vertical">
+                    <ImageView
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:src="@drawable/item_location_distance"/>
+                    <TextView
+                        android:id="@+id/item_location"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="2dp"
+                        android:fontFamily="@font/work_sans_regular"
+                        android:textColor="@color/textSecondry"
+                        android:text="4485.5km"
+                        android:textSize="15dp" />
+                    <ImageView
+
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_marginLeft="10dp"
+                        android:src="@drawable/views"/>
+                    <TextView
+                        android:id="@+id/item_views"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="2dp"
+                        android:fontFamily="@font/work_sans_regular"
+                        android:textColor="@color/textSecondry"
+                        android:text="4485"
+                        android:textSize="15dp" />
+                </LinearLayout>
+            </LinearLayout>
+        </RelativeLayout>
+
+
+    </com.google.android.material.card.MaterialCardView>
+</FrameLayout>
