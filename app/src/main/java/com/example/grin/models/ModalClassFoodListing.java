@@ -1,34 +1,60 @@
 package com.example.grin.models;
 
+import android.util.Log;
+
 public class ModalClassFoodListing {
-    int image;
-    int UserImage;
+    String itemUri;
+    //Uri itemUri;
+    String userImage;
     String title;
     String userName;
     String distance;
     String views;
-    public ModalClassFoodListing(int image, int userImage, String title, String userName, String distance, String views) {
-        this.image = image;
+
+    public String getItemUri() {
+        return itemUri;
+    }
+
+    public void setItemUri(String itemUri) {
+        this.itemUri = itemUri;
+    }
+
+    public ModalClassFoodListing(String itmUri, String userImage, String title, String userName, String distance, String views) {
+        this.itemUri = itemUri;
+        this.userImage = userImage;
+        this.title = title;
+        this.userName = userName;
+        this.distance = distance;
+        this.views = views;
+        Log.d("","Data Added");
+    }
+    public ModalClassFoodListing() {
+
+    }
+   /* public ModalClassFoodListing(Uri itemUri, int userImage, String title, String userName, String distance, String views) {
+        this.itemUri = itemUri;
         UserImage = userImage;
         this.title = title;
         this.userName = userName;
         this.distance = distance;
         this.views = views;
     }
-    public int getImage() {
-        return image;
+
+    public Uri getItemUri() {
+        return itemUri;
     }
 
-    public void setImage(int image) {
-        this.image = image;
+    public void setItemUri(Uri itemUri) {
+        this.itemUri = itemUri;
+    }*/
+
+
+    public String getUserImage() {
+        return userImage;
     }
 
-    public int getUserImage() {
-        return UserImage;
-    }
-
-    public void setUserImage(int userImage) {
-        UserImage = userImage;
+    public void setUserImage(String userImage) {
+        this.userImage = userImage;
     }
 
     public String getTitle() {

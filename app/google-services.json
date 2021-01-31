@@ -1,34 +1,41 @@
 {
   "project_info": {
-    "project_number": "760813758029",
-    "firebase_url": "https://grin-d63d2.firebaseio.com",
-    "project_id": "grin-d63d2",
-    "storage_bucket": "grin-d63d2.appspot.com"
+    "project_number": "242665542529",
+    "project_id": "grin-ea2c2",
+    "storage_bucket": "grin-ea2c2.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:760813758029:android:6fd447c3347acfd8b51e04",
+        "mobilesdk_app_id": "1:242665542529:android:6c3b5a9cd424d55acb4e80",
         "android_client_info": {
           "package_name": "com.example.grin"
         }
       },
       "oauth_client": [
         {
-          "client_id": "760813758029-d6h0m4pkdhp8tf368oai3h3rnlrhtlcl.apps.googleusercontent.com",
+          "client_id": "242665542529-75kr3vujsv5k88u57vdh7ro9d487nc76.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.grin",
+            "certificate_hash": "5fb4ba8b68cf94bed7509da3546cf8c6b025f564"
+          }
+        },
+        {
+          "client_id": "242665542529-n4iuto4siasdsalcdkbbd9dh6rvuujiv.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyBaXUSBPhSJFGAa_30rxATE35AdZ73RbJw"
+          "current_key": "AIzaSyD3hapCqPnxMDayqHbNUIhru7lBcMlqv_U"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "760813758029-d6h0m4pkdhp8tf368oai3h3rnlrhtlcl.apps.googleusercontent.com",
+              "client_id": "242665542529-n4iuto4siasdsalcdkbbd9dh6rvuujiv.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

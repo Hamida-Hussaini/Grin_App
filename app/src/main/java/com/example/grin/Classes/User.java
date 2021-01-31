@@ -7,16 +7,15 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.firestore.DocumentReference;
+/*import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.Exclude;
-import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestore;*/
 
 import java.util.HashMap;
 import java.util.Map;
 
 public class User {
     FirebaseAuth fAuth;
-    FirebaseFirestore fStore;
     String errorMsg;
     String firstName,lastName,email,mobile,password,userId,location;
     boolean mobileVerified,emailVerified;
@@ -33,7 +32,6 @@ public class User {
         this.longitude = longitude;
         this.latitude = latitude;
     }
-    @Exclude
     public Map<String, Object> toMap() {
         HashMap<String, Object> result = new HashMap<>();
         result.put("longitude", longitude);
@@ -124,7 +122,7 @@ public class User {
     }
     //==================create user account
 
-    public boolean createAccount() throws Exception{
+   /* public boolean createAccount() throws Exception{
 
          try {
                  fAuth = FirebaseAuth.getInstance();
@@ -142,12 +140,9 @@ public class User {
                          }
                          else
                          {
-                             ErrorMEssages.errorMsg=task.getException().toString();
-                             ErrorMEssages.check=false;
                          }
                      }
                  });
-                 return ErrorMEssages.check;
 
          }
          catch (Exception ex) {
@@ -172,13 +167,11 @@ public class User {
                 @Override
                 public void onComplete(@NonNull Task<Void> task) {
                     if (task.isSuccessful()) {
-                        ErrorMEssages.errorMsg=null;
-                        ErrorMEssages.check=false;
+
 
                     } else {
 
-                        ErrorMEssages.errorMsg="Error: "+task.getException().toString();
-                        ErrorMEssages.check=false;
+
 
                     }
                 }
@@ -196,5 +189,5 @@ public class User {
 
         }
 
-     }
+     }*/
 }

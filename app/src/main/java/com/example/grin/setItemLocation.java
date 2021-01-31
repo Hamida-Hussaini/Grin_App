@@ -9,7 +9,6 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
-import androidx.fragment.app.FragmentActivity;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
@@ -22,9 +21,7 @@ import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
-
 import android.os.Bundle;
-import android.os.CountDownTimer;
 import android.os.Handler;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -39,8 +36,8 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.grin.Classes.User;
 import com.example.grin.Classes.UserLocation;
+import com.example.grin.Classes.common;
 import com.example.grin.adapter.PlaceAutoSuggestAdapter;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.ResolvableApiException;
@@ -57,13 +54,10 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.Marker;
-import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
-
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -71,18 +65,20 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
-public class MyLocation extends AppCompatActivity implements OnMapReadyCallback,NavigationView.OnNavigationItemSelectedListener {
 
+public class setItemLocation extends AppCompatActivity implements OnMapReadyCallback {
     private static final String TAG = MyLocation.class.getSimpleName();
     ProgressBar progressBar;
     ImageView marker;
+    ImageView btnBack;
     private GoogleMap mMap;
+    common newCommon=new common();
 
     // The entry point to the Fused Location Provider.
     private FusedLocationProviderClient fusedLocationProviderClient;
@@ -116,28 +112,33 @@ public class MyLocation extends AppCompatActivity implements OnMapReadyCallback,
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_my_location);
+        setContentView(R.layout.activity_set_item_location);
 
         progressBar = findViewById(R.id.loginProgress);
-      drawerLayout=findViewById(R.id.drawer_layout);
+        drawerLayout=findViewById(R.id.drawer_layout);
         navigationView=findViewById(R.id.nav_view);
+
         toolbar = findViewById(R.id.main_toolbar);
-        toolbar.setTitle("My Location");
+        toolbar.setTitle("Set Pickup Location");
         setSupportActionBar(toolbar);
 
-        navigationView.bringToFront();
-        ActionBarDrawerToggle toogle=new ActionBarDrawerToggle(this,drawerLayout,toolbar,R.string.navigation_drawer_open,R.string.navigation_drawer_close);
-        drawerLayout.addDrawerListener(toogle);
-        toogle.syncState();
-        navigationView.setNavigationItemSelectedListener(this);
+        btnBack = findViewById(R.id.btnBack);
+        btnBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(setItemLocation.this, AddListtingItem.class);
+                startActivity(intent);
+                finish();
 
-        navigationView.setCheckedItem(R.id.nav_home);
+
+            }
+        });
 
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
         latLng = defaultLocation;
         mSearchText=(AutoCompleteTextView) findViewById(R.id.input_search);
         marker=findViewById(R.id.marker);
-        mSearchText.setAdapter(new PlaceAutoSuggestAdapter(MyLocation.this,android.R.layout.simple_list_item_1));
+        mSearchText.setAdapter(new PlaceAutoSuggestAdapter(setItemLocation.this,android.R.layout.simple_list_item_1));
         mSearchText.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -161,7 +162,17 @@ public class MyLocation extends AppCompatActivity implements OnMapReadyCallback,
         });
 
 
-        getUserLocaton();
+        if(common.latitude!=null)
+        {
+            longitude = common.longitude;
+            latitude = common.latitude;
+            latLng = new LatLng(latitude, longitude);
+            showMeOnMap();
+        }
+        else
+        {
+            getUserLocaton();
+        }
 
     }
     @Override
@@ -174,39 +185,15 @@ public class MyLocation extends AppCompatActivity implements OnMapReadyCallback,
         }
 
     }
-    @Override
-    public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
-        switch (menuItem.getItemId()){
-            case R.id.nav_home:
-                Intent intent=new Intent(MyLocation.this,DashBoard.class);
-                startActivity(intent);
-                break;
-            case R.id.nav_profile:
-                Intent profileIntent=new Intent(MyLocation.this,UserProfile.class);
-                startActivity(profileIntent);
-                break;
-            case R.id.nav_location:
 
-                break;
-            case R.id.nav_logout:
-                FirebaseAuth.getInstance().signOut();
-                Intent loginIntent=new Intent(getApplicationContext(),LoginUser.class);
-                startActivity(loginIntent);
-                finish();
-
-
-        }
-        drawerLayout.closeDrawer(GravityCompat.START);
-        return true;
-    }
     // Create a new token for the autocomplete session. Pass this to FindAutocompletePredictionsRequest,
     // and once again when the user makes a selection (for example when calling fetchPlace()).
-   public void geoLocate(){
-       marker.setVisibility(View.INVISIBLE);
-       progressBar.setVisibility(View.VISIBLE);
-       Log.d(TAG,"geoLocate: geoLocating");
+    public void geoLocate(){
+        marker.setVisibility(View.INVISIBLE);
+        progressBar.setVisibility(View.VISIBLE);
+        Log.d(TAG,"geoLocate: geoLocating");
         String searchString=mSearchText.getText().toString();
-        Geocoder geocoder=new Geocoder(MyLocation.this, Locale.getDefault());
+        Geocoder geocoder=new Geocoder(setItemLocation.this);
         List<Address> list=new ArrayList<>();
         try {
             list= geocoder.getFromLocationName(searchString,1);
@@ -217,6 +204,7 @@ public class MyLocation extends AppCompatActivity implements OnMapReadyCallback,
         }
         if(list.size()>0) {
             Address address=list.get(0);
+
             latitude=address.getLatitude();
             longitude=address.getLongitude();
             latLng=new LatLng(latitude,longitude);
@@ -237,53 +225,59 @@ public class MyLocation extends AppCompatActivity implements OnMapReadyCallback,
     }
 
     public void getUserLocaton() {
+        if(common.latitude!=null)
+        {
+            longitude = common.longitude;
+            latitude = common.latitude;
+            latLng = new LatLng(latitude, longitude);
+            showMeOnMap();
+        }
+        else {
+            fAuth = FirebaseAuth.getInstance();
+            if (fAuth.getCurrentUser() != null) {
+                progressBar.setVisibility(View.VISIBLE);
+                marker.setVisibility(View.INVISIBLE);
+                Log.d(TAG, "getUserLocation: getting Location");
+                final String userId = fAuth.getCurrentUser().getUid();
+                rootnode = FirebaseDatabase.getInstance();
+                reference = rootnode.getReference("users").child(userId);
+                reference.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        if (snapshot.exists()) {
 
-        fAuth = FirebaseAuth.getInstance();
-        if(fAuth.getCurrentUser()!=null) {
-            progressBar.setVisibility(View.VISIBLE);
-            marker.setVisibility(View.INVISIBLE);
-            Log.d(TAG,"getUserLocation: getting Location");
-            final String userId = fAuth.getCurrentUser().getUid();
-            rootnode = FirebaseDatabase.getInstance();
-            reference = rootnode.getReference("users").child(userId);
-            reference.addListenerForSingleValueEvent(new ValueEventListener() {
-                @Override
-                public void onDataChange(@NonNull DataSnapshot snapshot) {
-                    if (snapshot.exists()) {
+                            if (snapshot.child("longitude").exists() && snapshot.child("latitude").exists()) {
+                                longitude = snapshot.child("longitude").getValue(Double.class);
+                                latitude = snapshot.child("latitude").getValue(Double.class);
+                                latLng = new LatLng(latitude, longitude);
 
-                        if (snapshot.child("longitude").exists() && snapshot.child("latitude").exists()) {
-                            longitude = snapshot.child("longitude").getValue(Double.class);
-                            latitude = snapshot.child("latitude").getValue(Double.class);
-                            latLng = new LatLng(latitude, longitude);
+                                Log.d(TAG, "getUserLocation: Location Found." + latLng);
+                                showMeOnMap();
+                            } else {
+                                Log.d(TAG, "getUserLocation: Location Not Found." + latLng);
 
-                            Log.d(TAG,"getUserLocation: Location Found."+latLng);
-                            showMeOnMap();
+                                latLng = defaultLocation;
+                                showMeOnMap();
+                            }
                         } else {
-                            Log.d(TAG,"getUserLocation: Location Not Found."+latLng);
+                            Log.d(TAG, "getUserLocation: User Not Found" + latLng);
 
                             latLng = defaultLocation;
                             showMeOnMap();
                         }
-                    } else {
-                        Log.d(TAG,"getUserLocation: User Not Found"+latLng);
-
-                        latLng = defaultLocation;
-                        showMeOnMap();
                     }
-                }
 
-                @Override
-                public void onCancelled(@NonNull DatabaseError error) {
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
 
-                }
-            });
-        }
-        else
-        {
+                    }
+                });
+            } else {
 
-            Log.d(TAG,"getUserLocation: User Not Logged In"+latLng);
-            latLng = defaultLocation;
-            showMeOnMap();
+                Log.d(TAG, "getUserLocation: User Not Logged In" + latLng);
+                latLng = defaultLocation;
+                showMeOnMap();
+            }
         }
 /*
         getCurrentLocation();
@@ -300,7 +294,6 @@ public class MyLocation extends AppCompatActivity implements OnMapReadyCallback,
     @Override
     public void onMapReady(GoogleMap map) {
         mMap = map;
-        // Add a marker in Sydney and move the camera
         if (latLng != null) {
             int TIME = 1000; //5000 ms (5 Seconds)
 
@@ -331,47 +324,27 @@ public class MyLocation extends AppCompatActivity implements OnMapReadyCallback,
     }
     public void saveLocation()
     {
-
-        fAuth = FirebaseAuth.getInstance();
-        if(fAuth.getCurrentUser()!=null) {
-            final String userId = fAuth.getCurrentUser().getUid();
-            rootnode= FirebaseDatabase.getInstance();
-            reference=rootnode.getReference("users").child(userId);
-
+        try {
             latLng=mMap.getProjection().getVisibleRegion().latLngBounds.getCenter();
             longitude=latLng.longitude;
             latitude=latLng.latitude;
-            Map<String, Object> hopperUpdates = new HashMap<>();
-            hopperUpdates.put("longitude", longitude);
-            hopperUpdates.put("latitude", latitude);
-            reference.updateChildren(hopperUpdates);
-            UserLocation saveLocaton=new UserLocation(longitude,latitude);
-            progressBar.setVisibility(View.INVISIBLE);
-            Toast.makeText(MyLocation.this, "Location Saved successfully.", Toast.LENGTH_SHORT).show();
-           /* reference.addListenerForSingleValueEvent(new ValueEventListener() {
-                @Override
-                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                    Map<String, Object> postValues = new HashMap<String,Object>();
-                    for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                        postValues.put(snapshot.getKey(),snapshot.getValue());
-                    }
-                    postValues.put("longitude", longitude);
-                    postValues.put("latitude", latitude);
-                    reference.updateChildren(postValues);
-                    progressBar.setVisibility(View.INVISIBLE);
-                    Toast.makeText(MyLocation.this, "Location Saved successfully.", Toast.LENGTH_SHORT).show();
-                }
 
-                @Override
-                public void onCancelled(@NonNull DatabaseError error) {
+            common.latitude=latitude;
+            common.longitude=longitude;
+            Toast.makeText(setItemLocation.this, "Pickup Location Saved successfully.", Toast.LENGTH_SHORT).show();
 
-                }
-            });*/
+            Intent intent = new Intent(setItemLocation.this, AddListtingItem.class);
+            startActivity(intent);
+            finish();
         }
-        else
+        catch (Exception ex)
         {
-            Toast.makeText(MyLocation.this, "User not found", Toast.LENGTH_SHORT).show();
+            Toast.makeText(setItemLocation.this, ""+ex.toString(), Toast.LENGTH_LONG).show();
+
         }
+
+
+
 
     }
     public void saveHomeLocation(View view) {
@@ -463,9 +436,9 @@ public class MyLocation extends AppCompatActivity implements OnMapReadyCallback,
 
         LocationSettingsRequest.Builder builder = new LocationSettingsRequest.Builder().addLocationRequest(locationRequest);
 
-        SettingsClient settingsClient = LocationServices.getSettingsClient(MyLocation.this);
+        SettingsClient settingsClient = LocationServices.getSettingsClient(setItemLocation.this);
         Task<LocationSettingsResponse> task = settingsClient.checkLocationSettings(builder.build());
-        task.addOnSuccessListener(MyLocation.this, new OnSuccessListener<LocationSettingsResponse>() {
+        task.addOnSuccessListener(setItemLocation.this, new OnSuccessListener<LocationSettingsResponse>() {
             @Override
             public void onSuccess(LocationSettingsResponse locationSettingsResponse) {
                 isLocationEnable=true;
@@ -475,14 +448,14 @@ public class MyLocation extends AppCompatActivity implements OnMapReadyCallback,
             }
         });
 
-        task.addOnFailureListener(MyLocation.this, new OnFailureListener() {
+        task.addOnFailureListener(setItemLocation.this, new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
                 if (e instanceof ResolvableApiException) {
                     isLocationEnable=false;
                     ResolvableApiException resolvable = (ResolvableApiException) e;
                     try {
-                        resolvable.startResolutionForResult(MyLocation.this, 51);
+                        resolvable.startResolutionForResult(setItemLocation.this, 51);
                     } catch (IntentSender.SendIntentException ex) {
                         ex.printStackTrace();
                     }
@@ -528,7 +501,7 @@ public class MyLocation extends AppCompatActivity implements OnMapReadyCallback,
                                 longitude=lastKnownLocation.getLongitude();
                                 latLng=new LatLng(lastKnownLocation.getLatitude(), lastKnownLocation.getLongitude());
 
-                                 showMeOnMap();
+                                showMeOnMap();
 
 
 
@@ -564,7 +537,7 @@ public class MyLocation extends AppCompatActivity implements OnMapReadyCallback,
                         else
                         {
 
-                            Toast.makeText(MyLocation.this,"Unable to get last location",Toast.LENGTH_SHORT).show();
+                            Toast.makeText(setItemLocation.this,"Unable to get last location",Toast.LENGTH_SHORT).show();
                         }
                     }
                 });
@@ -605,5 +578,4 @@ public class MyLocation extends AppCompatActivity implements OnMapReadyCallback,
                 });
         dialog.show();
     }
-
 }

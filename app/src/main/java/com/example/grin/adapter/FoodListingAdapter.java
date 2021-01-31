@@ -1,6 +1,7 @@
 package com.example.grin.adapter;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,6 +11,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.example.grin.R;
 import com.example.grin.models.ModalClassFoodListing;
 
@@ -17,7 +19,9 @@ import org.w3c.dom.Text;
 
 import java.util.List;
 
+import static android.content.ContentValues.TAG;
 public class FoodListingAdapter extends RecyclerView.Adapter<FoodListingAdapter.MyViewHolder> {
+//public class FoodListingAdapter extends FirebaseRecylerAdapter<ModalClassFoodListing,FoodListingAdapter.MyViewHolder> {
     List<ModalClassFoodListing> mList;
     Context context;
 
@@ -36,12 +40,20 @@ public class FoodListingAdapter extends RecyclerView.Adapter<FoodListingAdapter.
 
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
-        holder.userImage.setImageResource(mList.get(position).getUserImage());
-        holder.itemImage.setImageResource(mList.get(position).getImage());
-        holder.Distance.setText(mList.get(position).getDistance());
-        holder.name.setText(mList.get(position).getTitle());
-        holder.User.setText(mList.get(position).getUserName());
-        holder.Views.setText(mList.get(position).getViews());
+        try {
+            Glide.with(holder.itemImage).load(mList.get(position).getItemUri()).into(holder.itemImage);
+            Glide.with(holder.userImage).load(mList.get(position).getItemUri()).into(holder.userImage);
+            //holder.itemImage.setImageResource(mList.get(position).getItemUri());
+            //  holder.itemImage.setImageURI(mList.get(position).getItemUri());
+            holder.Distance.setText(mList.get(position).getDistance());
+            holder.name.setText(mList.get(position).getTitle());
+            holder.User.setText(mList.get(position).getUserName());
+            holder.Views.setText(mList.get(position).getViews());
+        }
+        catch (Exception ex)
+        {
+            Log.d(TAG,"Binding Error: "+ex.toString());
+        }
     }
 
     @Override

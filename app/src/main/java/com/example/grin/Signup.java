@@ -21,7 +21,6 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.firestore.FirebaseFirestore;
 
 public class Signup extends AppCompatActivity {
     Button btnSignup, btnLogin;
@@ -31,7 +30,6 @@ public class Signup extends AppCompatActivity {
     ProgressBar progressBar;
     User user1 = new User();
     FirebaseAuth fAuth;
-    FirebaseFirestore fStore;
     FirebaseDatabase rootnode;
     DatabaseReference reference;
 

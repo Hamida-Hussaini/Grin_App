@@ -4,9 +4,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:gravity="center_horizontal"
+    android:layout_centerInParent="true"
 
+    android:layout_centerHorizontal="true"
+    android:gravity="center_horizontal"
     android:orientation="vertical"
+    app:layout_anchorGravity="center_horizontal"
     tools:context=".AddListtingItem">
 
     <LinearLayout
@@ -19,10 +22,10 @@
             android:layout_width="40dp"
             android:layout_height="60dp"
             android:background="@color/navigation_back_color"
-            android:paddingLeft="10dp"
-            android:src="@drawable/ic_back_button"
             android:contentDescription="@string/todo"
-            android:paddingStart="10dp" />
+            android:paddingStart="10dp"
+            android:paddingLeft="10dp"
+            android:src="@drawable/ic_back_button" />
 
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/addListingToolbar"
@@ -45,12 +48,15 @@
             android:orientation="vertical">
 
             <ImageView
-                android:id="@+id/imageCapture"
-                android:layout_width="match_parent"
-                android:layout_height="200dp"
+                android:id="@+id/itemPicture"
+                android:layout_width="200dp"
+                android:layout_height="180dp"
+                android:layout_marginTop="10dp"
+                android:layout_gravity="center_horizontal"
+                android:contentDescription="@string/todo"
                 android:scaleType="fitXY"
                 android:src="@drawable/ic_upload_picture"
-                android:contentDescription="@string/todo">
+                android:background="@drawable/white_border">
 
             </ImageView>
 
@@ -92,53 +98,55 @@
             </LinearLayout>
 
             <TextView
+                style="@style/Input_Title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
-                android:text="@string/select_type"
-                style="@style/Input_Title"/>
+                android:text="@string/select_type" />
 
 
             <RadioGroup
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:gravity="center_horizontal">
-                    <RadioButton
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/food"
-                        android:textColor="@color/textPrimary"
-                        android:fontFamily="@font/work_sans_medium"
-                        android:textSize="15sp"
-                        android:layout_marginLeft="10dp"
-                        android:layout_marginRight="10dp"/>
-                    <RadioButton
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/non_food"
-                        android:textColor="@color/textPrimary"
-                        android:fontFamily="@font/work_sans_medium"
-                        android:textSize="15sp"
-                        android:layout_marginLeft="10dp"
-                        android:layout_marginRight="10dp"/>
+                android:gravity="center_horizontal"
+                android:orientation="horizontal">
+
+                <RadioButton
+                    android:id="@+id/optNonFood"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:fontFamily="@font/work_sans_medium"
+                    android:text="@string/non_food"
+                    android:textColor="@color/textPrimary"
+                    android:checked="true"
+                    android:textSize="15sp" />
+                <RadioButton
+                    android:id="@+id/optFood"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:fontFamily="@font/work_sans_medium"
+                    android:text="@string/food"
+                    android:textColor="@color/textPrimary"
+                    android:textSize="15sp" />
             </RadioGroup>
-
-
 
 
             <Switch
                 android:id="@+id/checkType"
+                style="@style/Input_Title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/wanted_listing"
-                style="@style/Input_Title" />
+                android:text="@string/wanted_listing" />
 
             <TextView
+                style="@style/Input_Title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/title"
-                style="@style/Input_Title" />
+                android:text="@string/title" />
 
             <EditText
                 android:id="@+id/txtItemTitle"
@@ -152,133 +160,120 @@
                 android:textSize="15sp" />
 
             <TextView
+                style="@style/Input_Title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/description"
-                style="@style/Input_Title" />
+                android:text="@string/description" />
 
             <EditText
                 android:id="@+id/txtItemDesc"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:autofillHints=""
                 android:fontFamily="@font/work_sans_medium"
                 android:hint="@string/e_g_quality_quantity_use_by_date"
                 android:inputType="textMultiLine"
                 android:textColor="@color/textPrimaryDark"
-                android:textSize="15sp"
-                android:autofillHints="" />
+                android:textSize="15sp" />
 
             <TextView
+                style="@style/Input_Title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/quantity"
-                style="@style/Input_Title" />
+                android:text="@string/quantity" />
 
             <EditText
                 android:id="@+id/txtQuantity"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:autofillHints=""
                 android:fontFamily="@font/work_sans_medium"
-                android:hint="@string/quality"
+                android:hint="@string/quantity"
                 android:inputType="number"
                 android:textColor="@color/textPrimaryDark"
-                android:textSize="15sp"
-                android:autofillHints="" />
+                android:textSize="15sp" />
 
             <TextView
+                style="@style/Input_Title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/pick_up_date"
-                style="@style/Input_Title" />
-
-            <EditText
-                android:id="@+id/txtPickupDate"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/work_sans_medium"
-                android:inputType="date"
-                android:textColor="@color/textPrimaryDark"
-                android:textColorHint="#050505"
-                android:textSize="15sp"
-                android:autofillHints="" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/pick_up_time"
-                style="@style/Input_Title" />
+                android:text="@string/pick_up_time" />
 
             <EditText
                 android:id="@+id/txtPickupTime"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:autofillHints=""
                 android:fontFamily="@font/work_sans_medium"
-                android:inputType="time"
+                android:inputType="text"
                 android:textColor="@color/textPrimaryDark"
                 android:textColorHint="#050505"
-                android:textSize="15sp"
-                android:autofillHints="" />
-
+                android:textSize="15sp" />
             <TextView
+                style="@style/Input_Title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/pick_up_location"
-                style="@style/Input_Title" />
+                android:text="Last Date" />
 
-            <fragment
-                android:id="@+id/locationMap"
-                android:name="com.google.android.gms.maps.SupportMapFragment"
+            <EditText
+                android:id="@+id/txtLastDate"
                 android:layout_width="match_parent"
-                android:layout_height="130dp" />
+                android:layout_height="wrap_content"
+                android:autofillHints=""
+                android:inputType="none"
+                android:fontFamily="@font/work_sans_medium"
+                android:textColor="@color/textPrimaryDark"
+                android:textColorHint="#050505"
+                android:textSize="15sp" />
+
+            <TextView
+                style="@style/Input_Title"
+                android:id="@+id/pickLocaiton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/pick_up_location" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="150dp">
+
+                <fragment
+                    android:id="@+id/locationMap"
+                    android:name="com.google.android.gms.maps.SupportMapFragment"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+
+
+            </RelativeLayout>
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
                 android:gravity="center_vertical"
-                android:orientation="horizontal"
-                android:layout_marginTop="10dp">
-                <TextView
-                    android:id="@+id/lblListFor"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/list_for"
-                    style="@style/Input_Title" />
+                android:orientation="horizontal">
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:gravity="right">
-                    <Spinner
-                        android:id="@+id/spnrListFor"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:gravity="right"/>
-                </LinearLayout>
+                    android:gravity="right"
+                    android:orientation="horizontal"/>
 
 
             </LinearLayout>
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
                 android:gravity="center_vertical"
-                android:orientation="horizontal"
-                android:layout_marginTop="10dp">
-                <TextView
-                    android:id="@+id/lblShowAllUsers"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/showallusers"
-                    style="@style/Input_Title" />
+                android:orientation="horizontal">
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:gravity="right">
-                    <Spinner
-                        android:id="@+id/spnrShowAllUsers"
-                        android:gravity="right"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content" />
-                </LinearLayout>
+                    android:gravity="right"
+                    android:orientation="horizontal"/>
             </LinearLayout>
 
             <Button
