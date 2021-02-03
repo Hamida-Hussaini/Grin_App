@@ -112,7 +112,7 @@
                     android:id="@+id/locateMeContainer"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_above="@+id/btnSetHomeLocation"
+                    android:layout_above="@+id/btnSetPickupLocation"
                     android:layout_marginBottom="20dp"
                     android:gravity="center_horizontal|center_vertical"
                     android:orientation="horizontal">
@@ -143,7 +143,7 @@
                 </LinearLayout>
 
                 <Button
-                    android:id="@+id/btnSetHomeLocation"
+                    android:id="@+id/btnSetPickupLocation"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_alignParentBottom="true"
@@ -154,7 +154,6 @@
                     android:background="@drawable/yellow_border"
                     android:includeFontPadding="false"
                     android:fontFamily="@font/work_sans_bold"
-                    android:onClick="saveHomeLocation"
                     android:text="@string/set_pickup_location"
                     android:textColor="@color/textPrimary" />
             </RelativeLayout>

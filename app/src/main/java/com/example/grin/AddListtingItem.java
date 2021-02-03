@@ -25,11 +25,13 @@ import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.provider.MediaStore;
+import android.renderscript.ScriptGroup;
 import android.text.BoringLayout;
 import android.text.InputType;
 import android.util.Log;
@@ -88,6 +90,8 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.UUID;
 
+import static android.content.Intent.FLAG_GRANT_WRITE_URI_PERMISSION;
+
 public class AddListtingItem extends AppCompatActivity implements OnMapReadyCallback {
     private static final int GALLERY_PERM_CODE=100;
     private static final int CAMERA_PERM_CODE=101;
@@ -120,6 +124,7 @@ public class AddListtingItem extends AppCompatActivity implements OnMapReadyCall
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        try {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_listting_item);
         imageDisplay= findViewById(R.id.itemPicture);
@@ -129,15 +134,12 @@ public class AddListtingItem extends AppCompatActivity implements OnMapReadyCall
         toolbar = findViewById(R.id.addListingToolbar);
         toolbar.setTitle("Add Listing");
         setSupportActionBar(toolbar);
-
-        dialog=new Dialog(this);
-
         contentUri=null;
         btnBack = findViewById(R.id.btnBack);
         btnBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(AddListtingItem.this, DashBoard.class);
+                Intent intent = new Intent(AddListtingItem.this, MainContainer.class);
                 startActivity(intent);
                 finish();
 
@@ -192,7 +194,10 @@ public class AddListtingItem extends AppCompatActivity implements OnMapReadyCall
                 else {
                     if (contentUri != null) {
                         hideSoftKeyboard();
-                        addListingItem(contentUri);
+                        fAuth = FirebaseAuth.getInstance();
+                        if(fAuth.getCurrentUser()!=null) {
+                            addListingItem(contentUri);
+                        }
                     }
 
                 }
@@ -222,37 +227,41 @@ public class AddListtingItem extends AppCompatActivity implements OnMapReadyCall
         {
             getUserLocaton();
         }
-        if(common.valuesSet==true)
-        {
-            try {
-                itemTitle.setText(common.title);
-                desc.setText(common.desc);
-                lastDate.setText(common.lastDate);
-                pickupTime.setText(common.pickupTime);
-                quantity.setText(Integer.toString(common.quantity));
-                optFood.setChecked(common.optFood);
-                optNonFood.setChecked(common.optNonFood);
-                wantedListing.setChecked(common.wantedListing);
-                if(common.itemUri!=null)
+
+
+                if(common.valuesSet==true)
                 {
+                        itemTitle.setText(common.title);
+                        desc.setText(common.desc);
+                        lastDate.setText(common.lastDate);
+                        pickupTime.setText(common.pickupTime);
+                        quantity.setText(Integer.toString(common.quantity));
+                        optFood.setChecked(common.optFood);
+                        optNonFood.setChecked(common.optNonFood);
+                        wantedListing.setChecked(common.wantedListing);
+
                     contentUri=common.itemUri;
                     imageDisplay.setImageURI(contentUri);
+                      /*  if(common.itemUri!=null)
+                        {
+                            contentUri=common.itemUri;
+                            imageDisplay.setImageURI(contentUri);
+                        }
+                        else
+                        {
+                            contentUri=null;
+                        }*/
+
+                        common.valuesSet=false;
+                    }
+
+
+
                 }
-                else
-                {
-                    contentUri=null;
-                }
-
-                common.valuesSet=false;
-            }
-            catch (Exception ex)
-            {
-                Toast.makeText(this,"Error: "+ex.toString(),Toast.LENGTH_SHORT).show();
-            }
-
-
+        catch (Exception ex)
+        {
+            Toast.makeText(this,"Error: "+ex.toString(),Toast.LENGTH_SHORT).show();
         }
-
     }
 
     private void showDateDialog(final TextView lastDate) {
@@ -410,18 +419,25 @@ public class AddListtingItem extends AppCompatActivity implements OnMapReadyCall
     }
     @Override
     public void onMapReady(GoogleMap map) {
-        mMap = map;
+        try {
+            mMap = map;
 
-        if (latLng != null) {
-            mMap.addMarker(new MarkerOptions().position(latLng));
-            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng,16));
-        }
-        mMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
-            @Override
-            public void onMapClick(LatLng latLong) {
-                setItemLocation();
+            if (latLng != null) {
+                mMap.addMarker(new MarkerOptions().position(latLng));
+                mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng,16));
             }
-        });
+            mMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
+                @Override
+                public void onMapClick(LatLng latLong) {
+                    setItemLocation();
+                }
+            });
+        }
+        catch (Exception ex)
+        {
+            Log.d("Exception: ","Exception: "+ex.toString());
+        }
+
     }
     private void setItemLocation()
     {
@@ -447,6 +463,11 @@ public class AddListtingItem extends AppCompatActivity implements OnMapReadyCall
                 if(contentUri!=null) {
                     common.itemUri = contentUri;
                 }
+                else
+                {
+                    common.itemUri=null;
+                }
+                Log.d(AddListtingItem.class.getSimpleName(),"Uri: "+contentUri);
                 Intent intent = new Intent(AddListtingItem.this, setItemLocation.class);
                 startActivity(intent);
                 finish();
@@ -462,17 +483,20 @@ public class AddListtingItem extends AppCompatActivity implements OnMapReadyCall
     private void addListing()
     {
         try {
-                    final boolean check = false;
                     final String title = itemTitle.getEditableText().toString().trim();
                     final String describtion = desc.getEditableText().toString().trim();
                     final int quan = Integer.parseInt(quantity.getEditableText().toString());
                     final String pTime = pickupTime.getEditableText().toString().trim();
                     final String lDate = lastDate.getEditableText().toString().trim();
-                    final Boolean wantListing = wantedListing.isChecked();
-
+                    final String wantListing ;
+                    if (wantedListing.isChecked()) {
+                        wantListing = "true";
+                    } else {
+                        wantListing = "false";
+                    }
                     String itmType = "Not Set";
-                    final String listingDate = new SimpleDateFormat("dd/MM/yyyy").format(new Date());
-                    final String userId = fAuth.getCurrentUser().getUid();
+                    final String listingDate = new SimpleDateFormat("dd-MM-yyyy").format(new Date());
+                    final String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
                     final String itmUri = firebaseImageUri.toString();
                     if (optFood.isChecked() == true) {
                         itmType = "Food";
@@ -496,9 +520,6 @@ public class AddListtingItem extends AppCompatActivity implements OnMapReadyCall
                             public void onComplete(@NonNull Task<Void> task) {
                                 if (task.isSuccessful()) {
                                     firebaseImageUri = null;
-
-
-
                                 } else {
                                     Toast.makeText(AddListtingItem.this, "Error" + task.getException(), Toast.LENGTH_SHORT).show();
                                     Log.d("error", "Exception: " + task.getException());
@@ -675,10 +696,19 @@ public class AddListtingItem extends AppCompatActivity implements OnMapReadyCall
         }
     }
     private void openGalary() {
-        Intent intent = new Intent();
-        intent.setType("image/*");
-        intent.setAction(Intent.ACTION_GET_CONTENT);
-        startActivityForResult(Intent.createChooser(intent, "Choose from gallery"), GALLERY_REQUEST_CODE);
+        if(Build.VERSION.SDK_INT<19) {
+            Intent intent = new Intent();
+            intent.setAction(Intent.ACTION_GET_CONTENT);
+            intent.setType("image/*");
+            startActivityForResult(Intent.createChooser(intent, "Choose from gallery"), GALLERY_REQUEST_CODE);
+        }
+        else
+        {
+            Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
+            intent.addCategory(Intent.CATEGORY_OPENABLE);
+            intent.setType("image/*");
+            startActivityForResult(Intent.createChooser(intent, "Choose from gallery"), GALLERY_REQUEST_CODE);
+        }
     }
     private void dispatchTakePictureIntent() {
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);

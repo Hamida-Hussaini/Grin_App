@@ -9,6 +9,7 @@ import androidx.drawerlayout.widget.DrawerLayout;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -18,6 +19,7 @@ import android.view.WindowManager;
 import android.widget.Toast;
 
 import androidx.appcompat.widget.Toolbar;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.viewpager.widget.ViewPager;
 
 import com.example.grin.adapter.ViewPagerAdapter;
@@ -43,37 +45,38 @@ public class DashBoard extends AppCompatActivity implements NavigationView.OnNav
         setContentView(R.layout.activity_dash_board);
 
 
-        spaceNavigationView=(SpaceNavigationView)findViewById(R.id.space);
-        spaceNavigationView.initWithSaveInstanceState(savedInstanceState);
-        spaceNavigationView.addSpaceItem(new SpaceItem("", R.drawable.ic_listing));
-        spaceNavigationView.addSpaceItem(new SpaceItem("", R.drawable.ic_settings));
-        spaceNavigationView.addSpaceItem(new SpaceItem("", R.drawable.ic_guide));
-        spaceNavigationView.addSpaceItem(new SpaceItem("", R.drawable.ic_messages));
+//        spaceNavigationView=(SpaceNavigationView)findViewById(R.id.space);
+//        spaceNavigationView.initWithSaveInstanceState(savedInstanceState);
+//        spaceNavigationView.addSpaceItem(new SpaceItem("", R.drawable.ic_listing));
+//        spaceNavigationView.addSpaceItem(new SpaceItem("", R.drawable.ic_settings));
+//        spaceNavigationView.addSpaceItem(new SpaceItem("", R.drawable.ic_guide));
+//        spaceNavigationView.addSpaceItem(new SpaceItem("", R.drawable.ic_messages));
+//
+//        spaceNavigationView.setSpaceOnClickListener(new SpaceOnClickListener() {
+//            @Override
+//            public void onCentreButtonClick() {
+//
+//                spaceNavigationView.setCentreButtonSelectable(true);
+//                finish();
+//                Intent intent=new Intent(DashBoard.this,AddListtingItem.class);
+//                startActivity(intent);
+//            }
+//
+//            @Override
+//            public void onItemClick(int itemIndex, String itemName) {
+//
+//            }
+//
+//           @Override
+//            public void onItemReselected(int itemIndex, String itemName) {
+//                //Toast.makeText(DashBoard.this, itemIndex + " " + itemName, Toast.LENGTH_SHORT).show();
+//            }
+//        });
 
-        spaceNavigationView.setSpaceOnClickListener(new SpaceOnClickListener() {
-            @Override
-            public void onCentreButtonClick() {
-
-                spaceNavigationView.setCentreButtonSelectable(true);
-                finish();
-                Intent intent=new Intent(DashBoard.this,AddListtingItem.class);
-                startActivity(intent);
-            }
-
-            @Override
-            public void onItemClick(int itemIndex, String itemName) {
-
-            }
-
-           @Override
-            public void onItemReselected(int itemIndex, String itemName) {
-                //Toast.makeText(DashBoard.this, itemIndex + " " + itemName, Toast.LENGTH_SHORT).show();
-            }
-        });
-
-        tabLayout=(TabLayout)findViewById(R.id.dashboardTablayout);
-        viewPager=(ViewPager)findViewById(R.id.dashboardViewPager);
-
+//        tabLayout=(TabLayout)findViewById(R.id.dashboardTablayout);
+//        viewPager=(ViewPager)findViewById(R.id.dashboardViewPager);
+//        setupViewPager(viewPager);
+//        tabLayout.setupWithViewPager(viewPager);
 
         drawerLayout=findViewById(R.id.drawer_layout);
         navigationView=findViewById(R.id.nav_view);
@@ -83,8 +86,7 @@ public class DashBoard extends AppCompatActivity implements NavigationView.OnNav
 
         toolbar.setTitle("");
         setSupportActionBar(toolbar);
-        setupViewPager(viewPager);
-        tabLayout.setupWithViewPager(viewPager);
+
 
         navigationView.bringToFront();
         ActionBarDrawerToggle toogle=new ActionBarDrawerToggle(this,drawerLayout,toolbar,R.string.navigation_drawer_open,R.string.navigation_drawer_close);
@@ -93,13 +95,23 @@ public class DashBoard extends AppCompatActivity implements NavigationView.OnNav
         navigationView.setNavigationItemSelectedListener(this);
 
 
-        navigationView.setCheckedItem(R.id.nav_home);
+        View parentFragment=findViewById(R.id.mainFrameLayout);
+
+        if(parentFragment!=null)
+        {
+            mainDashboardFragment mainFragment=new mainDashboardFragment();
+            FragmentTransaction ft=getSupportFragmentManager().beginTransaction();
+            ft.replace(R.id.mainFrameLayout,mainFragment);
+            ft.addToBackStack(null);
+            ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+            ft.commit();
+        }
     }
-    @Override
-    protected void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-        spaceNavigationView.onSaveInstanceState(outState);
-    }
+//    @Override
+//    protected void onSaveInstanceState(Bundle outState) {
+//        super.onSaveInstanceState(outState);
+//        spaceNavigationView.onSaveInstanceState(outState);
+//    }
 
     private void setupViewPager(ViewPager viewPager)
     {
@@ -145,26 +157,50 @@ public class DashBoard extends AppCompatActivity implements NavigationView.OnNav
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
-        switch (menuItem.getItemId()){
-            case R.id.nav_home:
-                break;
-            case R.id.nav_location:
-                Intent intent=new Intent(DashBoard.this,MyLocation.class);
-                startActivity(intent);
-                break;
-            case R.id.nav_profile:
-                Intent profileIntent=new Intent(DashBoard.this,UserProfile.class);
-                startActivity(profileIntent);
-                break;
-            case R.id.nav_logout:
-                FirebaseAuth.getInstance().signOut();
-                Intent loginIntent=new Intent(getApplicationContext(),LoginUser.class);
-                startActivity(loginIntent);
-                finish();
+        View parentFragment=findViewById(R.id.mainFrameLayout);
+        try {
+            switch (menuItem.getItemId()){
+                case R.id.nav_home:
+                    if(parentFragment!=null)
+                    {
+                        mainDashboardFragment mainFragment=new mainDashboardFragment();
+                        FragmentTransaction ft=getSupportFragmentManager().beginTransaction();
+                        ft.replace(R.id.mainFrameLayout,mainFragment);
+                        ft.addToBackStack(null);
+                        ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+                        ft.commit();
+                    }
+                    break;
+                case R.id.nav_location:
+                    if(parentFragment!=null)
+                    {
+                        MyLocationFragment myLocationFragment=new MyLocationFragment();
+                        FragmentTransaction ftt=getSupportFragmentManager().beginTransaction();
+                        ftt.replace(R.id.mainFrameLayout,myLocationFragment);
+                        ftt.addToBackStack(null);
+                        ftt.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+                        ftt.commit();
+                    }
+                    break;
+                case R.id.nav_profile:
+                    Intent profileIntent=new Intent(DashBoard.this,UserProfile.class);
+                    startActivity(profileIntent);
+                    break;
+                case R.id.nav_logout:
+                    FirebaseAuth.getInstance().signOut();
+                    Intent loginIntent=new Intent(getApplicationContext(),LoginUser.class);
+                    startActivity(loginIntent);
+                    finish();
 
+
+            }
+            drawerLayout.closeDrawer(GravityCompat.START);
+        }
+        catch (Exception ex)
+        {
+            Log.d("TAG",""+ex.toString());
 
         }
-        drawerLayout.closeDrawer(GravityCompat.START);
         return true;
     }
   /*  public void logOut(View view)

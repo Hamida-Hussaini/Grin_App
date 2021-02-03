@@ -21,57 +21,6 @@ public class ModalClassNonFoodListing {
     String userImage;
     String userName;
     String wantedList;
-
-    public ModalClassNonFoodListing(String describtion, String itamType, String itemName, String itemUri, String lastDate, String listingDate,   String pickupTime, String status, String userId, String userImage, String userName) {
-        this.describtion = describtion;
-        this.itamType = itamType;
-        this.itemName = itemName;
-        this.itemUri = itemUri;
-        this.lastDate = lastDate;
-        this.listingDate = listingDate;
-        this.pickupTime = pickupTime;
-        this.status = status;
-        this.userId = userId;
-        this.userImage = userImage;
-        this.userName = userName;
-    }
-
-    public ModalClassNonFoodListing(String describtion, String itamType, String itemName, String itemUri, String lastDate, Double latitude, String listingDate, Double longitude, Integer noLike, Integer noRequest, Integer noViews, String pickupTime, Integer quantity, String status, String userId, String userImage, String userName, String wantedList) {
-        this.describtion = describtion;
-        this.itamType = itamType;
-        this.itemName = itemName;
-        this.itemUri = itemUri;
-        this.lastDate = lastDate;
-        this.latitude = latitude;
-        this.listingDate = listingDate;
-        this.longitude = longitude;
-        this.noLike = noLike;
-        this.noRequest = noRequest;
-        this.noViews = noViews;
-        this.pickupTime = pickupTime;
-        this.quantity = quantity;
-        this.status = status;
-        this.userId = userId;
-        this.userImage = userImage;
-        this.userName = userName;
-        this.wantedList = wantedList;
-    }
-
-    public ModalClassNonFoodListing(String describtion, String itamType, String itemName, String itemUri, String lastDate, String listingDate, String pickupTime, String status, String userId, String userImage, String userName, Integer noViews,Boolean wantedList) {
-        this.describtion = describtion;
-        this.itamType = itamType;
-        this.itemName = itemName;
-        this.itemUri = itemUri;
-        this.lastDate = lastDate;
-        this.listingDate = listingDate;
-        this.pickupTime = pickupTime;
-        this.status = status;
-        this.userId = userId;
-        this.userImage = userImage;
-        this.userName = userName;
-        this.noViews=noViews;
-    }
-
     public ModalClassNonFoodListing(String itemName,String itamType, String itemUri, String lastDate, String listingDate, String status, String userId, Integer noViews, Double latitude, Double longitude,String wantedList) {
         this.itamType = itamType;
         this.itemName = itemName;
@@ -84,6 +33,10 @@ public class ModalClassNonFoodListing {
         this.latitude = latitude;
         this.noViews=noViews;
         this.wantedList=wantedList;
+
+    }
+    public ModalClassNonFoodListing() {
+
 
     }
 

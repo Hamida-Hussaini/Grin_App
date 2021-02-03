@@ -119,7 +119,7 @@ public class MyLocation extends AppCompatActivity implements OnMapReadyCallback,
         setContentView(R.layout.activity_my_location);
 
         progressBar = findViewById(R.id.loginProgress);
-      drawerLayout=findViewById(R.id.drawer_layout);
+        drawerLayout=findViewById(R.id.drawer_layout);
         navigationView=findViewById(R.id.nav_view);
         toolbar = findViewById(R.id.main_toolbar);
         toolbar.setTitle("My Location");
@@ -185,9 +185,8 @@ public class MyLocation extends AppCompatActivity implements OnMapReadyCallback,
                 Intent profileIntent=new Intent(MyLocation.this,UserProfile.class);
                 startActivity(profileIntent);
                 break;
-            case R.id.nav_location:
 
-                break;
+
             case R.id.nav_logout:
                 FirebaseAuth.getInstance().signOut();
                 Intent loginIntent=new Intent(getApplicationContext(),LoginUser.class);

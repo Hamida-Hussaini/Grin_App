@@ -1,49 +1,25 @@
 package com.example.grin;
 
-import android.animation.ValueAnimator;
-import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
-import androidx.core.view.accessibility.AccessibilityViewCommand;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.text.BoringLayout;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.TextView;
-import android.widget.Toast;
 
-import com.bumptech.glide.Glide;
-import com.example.grin.adapter.FoodListingAdapter;
 import com.example.grin.adapter.NonFoodListingAdaptor;
-import com.example.grin.adapter.TestingAdapter;
-import com.example.grin.models.ModalClassFoodListing;
 import com.example.grin.models.ModalClassNonFoodListing;
-import com.example.grin.models.TestingModel;
-import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.firebase.ui.database.SnapshotParser;
-import com.firebase.ui.database.paging.FirebaseDataSource;
-import com.google.android.gms.maps.model.LatLng;
-import com.google.firebase.FirebaseError;
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
-import com.google.firebase.database.ValueEventListener;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 import static android.content.ContentValues.TAG;
 
@@ -77,7 +53,7 @@ public class NonFoodFragment extends Fragment {
         return fragment;
     }
     final FirebaseDatabase database = FirebaseDatabase.getInstance();
-    DatabaseReference ref = database.getReference("listing");
+    DatabaseReference ref ;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {

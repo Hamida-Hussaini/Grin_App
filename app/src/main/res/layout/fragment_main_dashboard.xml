@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:app="http://schemas.android.com/apk/res-auto"
+xmlns:tools="http://schemas.android.com/tools"
+android:layout_width="match_parent"
+android:layout_height="match_parent"
+tools:context=".mainDashboardFragment">
+
+
+
+
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <FrameLayout
+            android:id="@+id/childFragmentContainer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior">
+
+        </FrameLayout>
+        <com.luseen.spacenavigation.SpaceNavigationView
+            android:id="@+id/dashboardSpace"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="bottom"
+            app:active_item_color="@color/navButtons"
+            app:centre_button_color="@color/navButtons"
+            app:inactive_item_color="@color/navText"
+            app:space_background_color="@color/navigation_back_color"
+            app:centre_button_icon="@drawable/ic_add"
+            app:inactive_centre_button_icon_color="@color/navigation_back_color"
+            app:active_centre_button_icon_color="@color/navigation_back_color"
+            app:active_centre_button_background_color="@color/navButtons"
+            app:space_item_icon_size="23dp"
+            app:space_item_icon_only_size="@dimen/space_item_icon_only_size"
+            app:space_item_text_size="@dimen/space_item_text_default_size" />
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

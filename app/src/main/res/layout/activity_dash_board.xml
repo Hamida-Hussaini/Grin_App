@@ -15,7 +15,7 @@
         android:layout_height="match_parent"
         android:layout_gravity="start"
         app:headerLayout="@layout/header"
-        app:menu="@menu/main_menu" />
+        app:menu="@menu/sidebar_menu" />
 
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
@@ -35,20 +35,20 @@
                 android:orientation="horizontal">
 
 
-                <com.google.android.material.tabs.TabLayout
-                    android:id="@+id/dashboardTablayout"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:tabGravity="fill"
-                    android:layout_marginRight="100dp"
-                    app:tabMode="scrollable"
-                    app:tabSelectedTextColor="@color/navButtons"
-                    app:tabTextColor="@color/navText"
-                    app:tabRippleColor="@color/navigation_back_color"
-                    android:background="@color/navigation_back_color"
-                    app:tabIndicatorColor="@color/navButtons"
-                    app:tabIndicatorHeight="4dp"
-                    style="@style/Tab" />
+<!--                <com.google.android.material.tabs.TabLayout-->
+<!--                    android:id="@+id/dashboardTablayout"-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    app:tabGravity="fill"-->
+<!--                    android:layout_marginRight="100dp"-->
+<!--                    app:tabMode="scrollable"-->
+<!--                    app:tabSelectedTextColor="@color/navButtons"-->
+<!--                    app:tabTextColor="@color/navText"-->
+<!--                    app:tabRippleColor="@color/navigation_back_color"-->
+<!--                    android:background="@color/navigation_back_color"-->
+<!--                    app:tabIndicatorColor="@color/navButtons"-->
+<!--                    app:tabIndicatorHeight="4dp"-->
+<!--                    style="@style/Tab" />-->
 
 
                 <androidx.appcompat.widget.Toolbar
@@ -62,33 +62,40 @@
             </LinearLayout>
 
         </com.google.android.material.appbar.AppBarLayout>
-
-        <androidx.viewpager.widget.ViewPager
-
-            android:id="@+id/dashboardViewPager"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior" >
-
-        </androidx.viewpager.widget.ViewPager>
-
-
-       <com.luseen.spacenavigation.SpaceNavigationView
-            android:id="@+id/space"
+        <FrameLayout
+            android:id="@+id/mainFrameLayout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_gravity="bottom"
-            app:active_item_color="@color/navButtons"
-            app:centre_button_color="@color/navButtons"
-            app:inactive_item_color="@color/navText"
-            app:space_background_color="@color/navigation_back_color"
-            app:centre_button_icon="@drawable/ic_add"
-            app:inactive_centre_button_icon_color="@color/navigation_back_color"
-            app:active_centre_button_icon_color="@color/navigation_back_color"
-            app:active_centre_button_background_color="@color/navButtons"
-            app:space_item_icon_size="23dp"
-            app:space_item_icon_only_size="@dimen/space_item_icon_only_size"
-            app:space_item_text_size="@dimen/space_item_text_default_size" />
+            app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior">
+
+        </FrameLayout>
+
+<!--        <androidx.viewpager.widget.ViewPager-->
+
+<!--            android:id="@+id/dashboardViewPager"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior" >-->
+
+<!--        </androidx.viewpager.widget.ViewPager>-->
+
+
+<!--       <com.luseen.spacenavigation.SpaceNavigationView-->
+<!--            android:id="@+id/space"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="match_parent"-->
+<!--            android:layout_gravity="bottom"-->
+<!--            app:active_item_color="@color/navButtons"-->
+<!--            app:centre_button_color="@color/navButtons"-->
+<!--            app:inactive_item_color="@color/navText"-->
+<!--            app:space_background_color="@color/navigation_back_color"-->
+<!--            app:centre_button_icon="@drawable/ic_add"-->
+<!--            app:inactive_centre_button_icon_color="@color/navigation_back_color"-->
+<!--            app:active_centre_button_icon_color="@color/navigation_back_color"-->
+<!--            app:active_centre_button_background_color="@color/navButtons"-->
+<!--            app:space_item_icon_size="23dp"-->
+<!--            app:space_item_icon_only_size="@dimen/space_item_icon_only_size"-->
+<!--            app:space_item_text_size="@dimen/space_item_text_default_size" />-->
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 

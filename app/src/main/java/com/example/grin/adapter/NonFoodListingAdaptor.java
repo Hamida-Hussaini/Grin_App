@@ -61,7 +61,7 @@ public class NonFoodListingAdaptor extends FirebaseRecyclerAdapter<ModalClassNon
         final float distance;
         int kilometer;
         String itemType=model.getItamType();
-        if (model.getWantedList().equals("false")) {
+        if (model.getWantedList().equals("false") && model.getStatus().equals("Listed")) {
             if (longitude != null && latitude != null) {
                 Double itemLatitude = model.getLatitude();
                 Double itemLongitude = model.getLongitude();

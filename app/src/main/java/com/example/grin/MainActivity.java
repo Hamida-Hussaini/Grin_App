@@ -17,6 +17,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.grin.Classes.User;
+import com.google.android.gms.maps.model.Dash;
 
 public class MainActivity extends AppCompatActivity {
     private  static int SPLASH_SCREEN=5000;
@@ -36,7 +37,7 @@ public class MainActivity extends AppCompatActivity {
             login_btn=findViewById(R.id.btnMainLogin);
             if(user1.checkIfUserExist())
             {
-                Intent intentDashboard=new Intent(getApplicationContext(),DashBoard.class);
+                Intent intentDashboard=new Intent(getApplicationContext(), DashBoard.class);
                 startActivity(intentDashboard);
                 finish();
             }

@@ -1,15 +1,5 @@
 package com.example.grin;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.ActionBarDrawerToggle;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
-import androidx.core.view.GravityCompat;
-import androidx.drawerlayout.widget.DrawerLayout;
-
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
@@ -22,11 +12,23 @@ import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
 import android.os.Bundle;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.fragment.app.Fragment;
+
 import android.os.Handler;
 import android.util.Log;
 import android.view.KeyEvent;
-import android.view.MenuItem;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
@@ -38,7 +40,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.grin.Classes.UserLocation;
-import com.example.grin.Classes.common;
 import com.example.grin.adapter.PlaceAutoSuggestAdapter;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.ResolvableApiException;
@@ -71,16 +72,23 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
-public class setItemLocation extends AppCompatActivity implements OnMapReadyCallback {
-    private static final String TAG = MyLocation.class.getSimpleName();
+import static android.app.Activity.RESULT_OK;
+import static androidx.core.content.ContextCompat.getSystemService;
+
+/**
+ * A simple {@link Fragment} subclass.
+ * Use the {@link MyLocationFragment#newInstance} factory method to
+ * create an instance of this fragment.
+ */
+public class MyLocationFragment extends Fragment implements OnMapReadyCallback {
+    private static final String TAG = MyLocationFragment.class.getSimpleName();
     ProgressBar progressBar;
-    ImageView marker;
-    ImageView btnBack;
+    ImageView marker,locateMe;
+    Button btnSaveHomeLocation;
     private GoogleMap mMap;
-    Button btnsave;
-    common newCommon=new common();
 
     // The entry point to the Fused Location Provider.
     private FusedLocationProviderClient fusedLocationProviderClient;
@@ -94,7 +102,7 @@ public class setItemLocation extends AppCompatActivity implements OnMapReadyCall
     private boolean locationPermissionGranted;
     private boolean isLocationEnable = false;
     private AutoCompleteTextView mSearchText;
-
+    ImageView btnBack;
     // The geographical location where the device is currently located. That is, the last-known
     // location retrieved by the Fused Location Provider.
     private Location lastKnownLocation = null;
@@ -111,51 +119,79 @@ public class setItemLocation extends AppCompatActivity implements OnMapReadyCall
     DrawerLayout drawerLayout;
     NavigationView navigationView;
     Toolbar toolbar;
+    // TODO: Rename parameter arguments, choose names that match
+    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
+    private static final String ARG_PARAM1 = "param1";
+    private static final String ARG_PARAM2 = "param2";
+
+    // TODO: Rename and change types of parameters
+    private String mParam1;
+    private String mParam2;
+
+    public MyLocationFragment() {
+        // Required empty public constructor
+    }
+
+    public static MyLocationFragment newInstance(String param1, String param2) {
+        MyLocationFragment fragment = new MyLocationFragment();
+        Bundle args = new Bundle();
+        args.putString(ARG_PARAM1, param1);
+        args.putString(ARG_PARAM2, param2);
+        fragment.setArguments(args);
+        return fragment;
+    }
+
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_set_item_location);
-
-        progressBar = findViewById(R.id.loginProgress);
-        drawerLayout=findViewById(R.id.drawer_layout);
-        navigationView=findViewById(R.id.nav_view);
-
-        toolbar = findViewById(R.id.main_toolbar);
-        toolbar.setTitle("Set Pickup Location");
-        setSupportActionBar(toolbar);
-
-        btnBack = findViewById(R.id.btnBack);
-        btnBack.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(setItemLocation.this, AddListtingItem.class);
-                startActivity(intent);
-                finish();
+        if (getArguments() != null) {
+            mParam1 = getArguments().getString(ARG_PARAM1);
+            mParam2 = getArguments().getString(ARG_PARAM2);
+        }
+    }
 
 
-            }
-        });
 
-        btnsave = findViewById(R.id.btnSetPickupLocation);
-        btnsave.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                saveLocation();
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        View view= inflater.inflate(R.layout.fragment_my_location, container, false);
 
+        return view;
+    }
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        // find views by id
+        progressBar =view.findViewById(R.id.fragment_loginProgress);
 
-            }
-        });
-
-        fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
+        fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(getContext());
         latLng = defaultLocation;
-        mSearchText=(AutoCompleteTextView) findViewById(R.id.input_search);
-        marker=findViewById(R.id.marker);
-        mSearchText.setAdapter(new PlaceAutoSuggestAdapter(setItemLocation.this,android.R.layout.simple_list_item_1));
+        mSearchText=(AutoCompleteTextView)view.findViewById(R.id.fragment_input_search);
+        marker=view.findViewById(R.id.fragment_marker);
+        mSearchText.setAdapter(new PlaceAutoSuggestAdapter(getContext(),android.R.layout.simple_list_item_1));
         mSearchText.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 geoLocate();
-                hideSoftKeyboard();
+                // hideSoftKeyboard();
+            }
+        });
+        btnSaveHomeLocation=view.findViewById(R.id.fragment_btnSetHomeLocation);
+        btnSaveHomeLocation.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                marker.setVisibility(View.VISIBLE);
+                progressBar.setVisibility(View.VISIBLE);
+                saveLocation();
+
+            }
+        });
+        locateMe=view.findViewById(R.id.fragment_locateMeImage);
+        locateMe.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                locateMe();
             }
         });
 
@@ -165,7 +201,7 @@ public class setItemLocation extends AppCompatActivity implements OnMapReadyCall
                 if(actionId== EditorInfo.IME_ACTION_SEARCH
                         || keyEvent.getKeyCode()== KeyEvent.ACTION_DOWN) {
                     geoLocate();
-                    hideSoftKeyboard();
+                    ///hideSoftKeyboard();
                 }
                 return  false;
             }
@@ -173,39 +209,15 @@ public class setItemLocation extends AppCompatActivity implements OnMapReadyCall
 
         });
 
-
-        if(common.latitude!=null)
-        {
-            longitude = common.longitude;
-            latitude = common.latitude;
-            latLng = new LatLng(latitude, longitude);
-            showMeOnMap();
-        }
-        else
-        {
-            getUserLocaton();
-        }
+        getUserLocaton();
 
     }
-    @Override
-    public void onBackPressed() {
-        if(drawerLayout.isDrawerOpen(GravityCompat.START)){
-            drawerLayout.closeDrawer(GravityCompat.START);
-        }
-        else{
-            super.onBackPressed();
-        }
-
-    }
-
-    // Create a new token for the autocomplete session. Pass this to FindAutocompletePredictionsRequest,
-    // and once again when the user makes a selection (for example when calling fetchPlace()).
     public void geoLocate(){
         marker.setVisibility(View.INVISIBLE);
         progressBar.setVisibility(View.VISIBLE);
         Log.d(TAG,"geoLocate: geoLocating");
         String searchString=mSearchText.getText().toString();
-        Geocoder geocoder=new Geocoder(setItemLocation.this);
+        Geocoder geocoder=new Geocoder(getContext(), Locale.getDefault());
         List<Address> list=new ArrayList<>();
         try {
             list= geocoder.getFromLocationName(searchString,1);
@@ -216,16 +228,15 @@ public class setItemLocation extends AppCompatActivity implements OnMapReadyCall
         }
         if(list.size()>0) {
             Address address=list.get(0);
-
             latitude=address.getLatitude();
             longitude=address.getLongitude();
             latLng=new LatLng(latitude,longitude);
             showMeOnMap();
-            hideSoftKeyboard();
+           // hideSoftKeyboard();
 
         }
     }
-    private void hideSoftKeyboard()
+   /* private void hideSoftKeyboard()
     {
         View view=this.getCurrentFocus();
         if(view!=null)
@@ -234,62 +245,56 @@ public class setItemLocation extends AppCompatActivity implements OnMapReadyCall
             imm.hideSoftInputFromWindow(view.getWindowToken(),0);
 
         }
-    }
+    }*/
 
     public void getUserLocaton() {
-        if(common.latitude!=null)
-        {
-            longitude = common.longitude;
-            latitude = common.latitude;
-            latLng = new LatLng(latitude, longitude);
-            showMeOnMap();
-        }
-        else {
-            fAuth = FirebaseAuth.getInstance();
-            if (fAuth.getCurrentUser() != null) {
-                progressBar.setVisibility(View.VISIBLE);
-                marker.setVisibility(View.INVISIBLE);
-                Log.d(TAG, "getUserLocation: getting Location");
-                final String userId = fAuth.getCurrentUser().getUid();
-                rootnode = FirebaseDatabase.getInstance();
-                reference = rootnode.getReference("users").child(userId);
-                reference.addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot snapshot) {
-                        if (snapshot.exists()) {
+        fAuth = FirebaseAuth.getInstance();
+        if(fAuth.getCurrentUser()!=null) {
+            progressBar.setVisibility(View.VISIBLE);
+            marker.setVisibility(View.INVISIBLE);
+            Log.d(TAG,"getUserLocation: getting Location");
+            final String userId = fAuth.getCurrentUser().getUid();
+            rootnode = FirebaseDatabase.getInstance();
+            reference = rootnode.getReference("users").child(userId);
+            Log.d(TAG,"reference: "+reference.toString());
+            reference.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    if (snapshot.exists()) {
+                        Log.d(TAG,"DataExist: ");
+                        if (snapshot.child("longitude").exists() && snapshot.child("latitude").exists()) {
+                            longitude = snapshot.child("longitude").getValue(Double.class);
+                            latitude = snapshot.child("latitude").getValue(Double.class);
+                            latLng = new LatLng(latitude, longitude);
 
-                            if (snapshot.child("longitude").exists() && snapshot.child("latitude").exists()) {
-                                longitude = snapshot.child("longitude").getValue(Double.class);
-                                latitude = snapshot.child("latitude").getValue(Double.class);
-                                latLng = new LatLng(latitude, longitude);
-
-                                Log.d(TAG, "getUserLocation: Location Found." + latLng);
-                                showMeOnMap();
-                            } else {
-                                Log.d(TAG, "getUserLocation: Location Not Found." + latLng);
-
-                                latLng = defaultLocation;
-                                showMeOnMap();
-                            }
+                            Log.d(TAG,"getUserLocation: Location Found."+latLng);
+                            showMeOnMap();
                         } else {
-                            Log.d(TAG, "getUserLocation: User Not Found" + latLng);
+                            Log.d(TAG,"getUserLocation: Location Not Found."+latLng);
 
                             latLng = defaultLocation;
                             showMeOnMap();
                         }
+                    } else {
+                        Log.d(TAG,"getUserLocation: User Not Found"+latLng);
+
+                        latLng = defaultLocation;
+                        showMeOnMap();
                     }
+                }
 
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError error) {
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
 
-                    }
-                });
-            } else {
+                }
+            });
+        }
+        else
+        {
 
-                Log.d(TAG, "getUserLocation: User Not Logged In" + latLng);
-                latLng = defaultLocation;
-                showMeOnMap();
-            }
+            Log.d(TAG,"getUserLocation: User Not Logged In"+latLng);
+            latLng = defaultLocation;
+            showMeOnMap();
         }
 /*
         getCurrentLocation();
@@ -298,14 +303,15 @@ public class setItemLocation extends AppCompatActivity implements OnMapReadyCall
 
     public void showMeOnMap() {
 
-        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
-                .findFragmentById(R.id.map);
+        SupportMapFragment mapFragment = (SupportMapFragment) getChildFragmentManager()
+                .findFragmentById(R.id.fragment_map);
         mapFragment.getMapAsync(this);
     }
 
     @Override
     public void onMapReady(GoogleMap map) {
         mMap = map;
+        // Add a marker in Sydney and move the camera
         if (latLng != null) {
             int TIME = 1000; //5000 ms (5 Seconds)
 
@@ -336,34 +342,36 @@ public class setItemLocation extends AppCompatActivity implements OnMapReadyCall
     }
     public void saveLocation()
     {
-        try {
+        fAuth = FirebaseAuth.getInstance();
+        if(fAuth.getCurrentUser()!=null) {
+            final String userId = fAuth.getCurrentUser().getUid();
+            rootnode= FirebaseDatabase.getInstance();
+            reference=rootnode.getReference("users").child(userId);
+
             latLng=mMap.getProjection().getVisibleRegion().latLngBounds.getCenter();
             longitude=latLng.longitude;
             latitude=latLng.latitude;
-
-            common.latitude=latitude;
-            common.longitude=longitude;
+            Map<String, Object> hopperUpdates = new HashMap<>();
+            hopperUpdates.put("longitude", longitude);
+            hopperUpdates.put("latitude", latitude);
+            reference.updateChildren(hopperUpdates);
+          //  UserLocation saveLocaton=new UserLocation(longitude,latitude);
             progressBar.setVisibility(View.INVISIBLE);
-            Toast.makeText(setItemLocation.this, "Pickup Location Saved..." , Toast.LENGTH_SHORT).show();
+            Log.d(TAG,"saving location");
+            Toast.makeText(getActivity(), "Location Saved successfully.", Toast.LENGTH_SHORT).show();
 
-            Intent intent = new Intent(setItemLocation.this, AddListtingItem.class);
-            startActivity(intent);
-            finish();
         }
-        catch (Exception ex)
+        else
         {
-            Toast.makeText(setItemLocation.this, ""+ex.toString(), Toast.LENGTH_LONG).show();
-
+            Toast.makeText(getContext(), "User not found", Toast.LENGTH_SHORT).show();
         }
-
-
-
 
     }
-
-    public void locateMe(View view) {
+    public void locateMe() {
         marker.setVisibility(View.INVISIBLE);
         progressBar.setVisibility(View.VISIBLE);
+        Log.d(TAG,"Locate Me");
+
         if (!locationPermissionGranted) {
 
             getLocationPermission();
@@ -384,14 +392,14 @@ public class setItemLocation extends AppCompatActivity implements OnMapReadyCall
     }
     private void getLocationPermission() {
         String[] permissions={Manifest.permission.ACCESS_FINE_LOCATION,Manifest.permission.ACCESS_COARSE_LOCATION};
-        if (ContextCompat.checkSelfPermission(this.getApplicationContext(),
+        if (ContextCompat.checkSelfPermission(getContext(),
                 android.Manifest.permission.ACCESS_FINE_LOCATION)
-                == PackageManager.PERMISSION_GRANTED && ContextCompat.checkSelfPermission(this.getApplicationContext(),
+                == PackageManager.PERMISSION_GRANTED && ContextCompat.checkSelfPermission(getContext(),
                 Manifest.permission.ACCESS_COARSE_LOCATION)
                 == PackageManager.PERMISSION_GRANTED) {
             locationPermissionGranted = true;
         } else {
-            ActivityCompat.requestPermissions(this,
+            ActivityCompat.requestPermissions(getActivity(),
                     permissions,
                     PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION);
         }
@@ -444,9 +452,9 @@ public class setItemLocation extends AppCompatActivity implements OnMapReadyCall
 
         LocationSettingsRequest.Builder builder = new LocationSettingsRequest.Builder().addLocationRequest(locationRequest);
 
-        SettingsClient settingsClient = LocationServices.getSettingsClient(setItemLocation.this);
+        SettingsClient settingsClient = LocationServices.getSettingsClient(getActivity());
         Task<LocationSettingsResponse> task = settingsClient.checkLocationSettings(builder.build());
-        task.addOnSuccessListener(setItemLocation.this, new OnSuccessListener<LocationSettingsResponse>() {
+        task.addOnSuccessListener(getActivity(), new OnSuccessListener<LocationSettingsResponse>() {
             @Override
             public void onSuccess(LocationSettingsResponse locationSettingsResponse) {
                 isLocationEnable=true;
@@ -456,14 +464,14 @@ public class setItemLocation extends AppCompatActivity implements OnMapReadyCall
             }
         });
 
-        task.addOnFailureListener(setItemLocation.this, new OnFailureListener() {
+        task.addOnFailureListener(getActivity(), new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
                 if (e instanceof ResolvableApiException) {
                     isLocationEnable=false;
                     ResolvableApiException resolvable = (ResolvableApiException) e;
                     try {
-                        resolvable.startResolutionForResult(setItemLocation.this, 51);
+                        resolvable.startResolutionForResult(getActivity(), 51);
                     } catch (IntentSender.SendIntentException ex) {
                         ex.printStackTrace();
                     }
@@ -472,7 +480,7 @@ public class setItemLocation extends AppCompatActivity implements OnMapReadyCall
         });
     }
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if(requestCode==51)
         {
@@ -545,7 +553,7 @@ public class setItemLocation extends AppCompatActivity implements OnMapReadyCall
                         else
                         {
 
-                            Toast.makeText(setItemLocation.this,"Unable to get last location",Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getContext(),"Unable to get last location",Toast.LENGTH_SHORT).show();
                         }
                     }
                 });
@@ -556,26 +564,26 @@ public class setItemLocation extends AppCompatActivity implements OnMapReadyCall
 
     protected  void buildGoogleApiClient() {
 
-        mGoogleApiClient = new GoogleApiClient.Builder(this)
+        mGoogleApiClient = new GoogleApiClient.Builder(getContext())
                 .addApi(LocationServices.API)
                 .build();
 
     }
 
     @Override
-    protected void onStart() {
+    public void onStart() {
         buildGoogleApiClient();
         mGoogleApiClient.connect();
         super.onStart();
     }
-    protected void onStop() {
+    public void onStop() {
         mGoogleApiClient.disconnect();
         super.onStop();
     }
 
     private void showMessage(String title,String msg)
     {
-        final AlertDialog.Builder dialog=new AlertDialog.Builder(this);
+        final AlertDialog.Builder dialog=new AlertDialog.Builder(this.getContext());
         dialog.setTitle(""+title)
                 .setMessage(""+msg)
                 .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
