@@ -5,21 +5,21 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".view_listing_fragment">
+    tools:context=".fragments.view_listing_fragment">
 
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:theme="@style/AppTheme.AppBarOverlay">
+        android:theme="@style/tab_theme">
         <com.google.android.material.tabs.TabLayout
             android:id="@+id/dashboardFragmentTablayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:tabMode="fixed"
             app:tabSelectedTextColor="@color/navButtons"
-            app:tabTextColor="@color/navText"
-            app:tabRippleColor="@color/navigation_back_color"
-            android:background="@color/navigation_back_color"
+            app:tabTextColor="@color/textSecondry"
+            app:tabRippleColor="@color/item_card"
+            android:background="@color/item_card"
             app:tabIndicatorColor="@color/navButtons"
             app:tabIndicatorHeight="4dp"
             style="@style/Tab" />

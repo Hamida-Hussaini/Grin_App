@@ -19,7 +19,7 @@
             android:icon="@drawable/ic_my_impact">
         </item>
         <item
-            android:id="@+id/nav_add_listing"
+            android:id="@+id/nav_my_listing"
             android:title="My Listing"
             android:icon="@drawable/ic_my_listing">
         </item>

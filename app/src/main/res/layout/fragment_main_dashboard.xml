@@ -5,11 +5,7 @@ xmlns:app="http://schemas.android.com/apk/res-auto"
 xmlns:tools="http://schemas.android.com/tools"
 android:layout_width="match_parent"
 android:layout_height="match_parent"
-tools:context=".mainDashboardFragment">
-
-
-
-
+tools:context=".fragments.mainDashboardFragment">
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -36,6 +32,6 @@ tools:context=".mainDashboardFragment">
             app:space_item_icon_size="23dp"
             app:space_item_icon_only_size="@dimen/space_item_icon_only_size"
             app:space_item_text_size="@dimen/space_item_text_default_size" />
-    </androidx.coordinatorlayout.widget.CoordinatorLayout>>
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

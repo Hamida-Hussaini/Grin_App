@@ -66,6 +66,11 @@
     <string name="non_food">Non_Food</string>
     <string name="upload_from_gallery">Upload from gallery</string>
     <string name="set_pickup_location">Set Pickup Location</string>
+    <string name="apply">Apply</string>
+    <string name="newest">Newest</string>
+    <string name="closest">Closest</string>
+    <string name="sort_by">Sort By</string>
+    <string name="near_listing_msg">No listings near you\n right now - why not add\n something?</string>
 
 
 </resources>

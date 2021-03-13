@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="450dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    app:behavior_hideable="true"
+    app:behavior_peekHeight='0dp'
+    android:background="@drawable/bottom_sheet"
+    app:layout_behavior="@string/bottom_sheet_behavior">
+   <LinearLayout
+       android:layout_width="match_parent"
+       android:layout_height="wrap_content"
+       android:paddingTop="10dp"
+       android:paddingBottom="10dp"
+       android:orientation="horizontal">
+       <TextView
+           style="@style/page_Title"
+           android:id="@+id/setting_title"
+           android:layout_width="310dp"
+           android:layout_height="wrap_content"
+           android:gravity="center_horizontal"
+           android:text="FOOD Filter" >
+
+       </TextView>
+       <ImageView
+           android:id="@+id/btnClose"
+           android:layout_width="30dp"
+           android:layout_height="30dp"
+           android:contentDescription="@string/todo"
+           android:src="@drawable/ic_close" />
+
+   </LinearLayout>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="3dp"
+        android:background="@color/navText"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="20dp"
+        android:orientation="vertical">
+        <Switch
+            android:id="@+id/checkType"
+            style="@style/Input_Title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Show 'Wanted' listings" />
+        <TextView
+            style="@style/Input_Title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="Distance" />
+
+
+        <HorizontalScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp">
+
+            <RadioGroup
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="20dp"
+                android:gravity="center_horizontal"
+                android:orientation="horizontal">
+
+                <RadioButton
+                    android:id="@+id/rd_1.5"
+                    style="@style/radio_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:checked="true"
+                    android:text="0.5 km" />
+
+                <RadioButton
+                    android:id="@+id/rd_1"
+                    style="@style/radio_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="1 km" />
+
+                <RadioButton
+                    android:id="@+id/rd_2"
+                    style="@style/radio_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="2 km" />
+
+                <RadioButton
+                    android:id="@+id/rd_5"
+                    style="@style/radio_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="5 km" />
+
+                <RadioButton
+                    android:id="@+id/rd_10"
+                    style="@style/radio_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="10 km" />
+
+                <RadioButton
+                    android:id="@+id/rd_25"
+                    style="@style/radio_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="25 km" />
+            </RadioGroup>
+        </HorizontalScrollView>
+
+        <TextView
+            style="@style/Input_Title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="@string/sort_by" />
+        <RadioGroup
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="left"
+            android:orientation="vertical">
+
+            <RadioButton
+                android:id="@+id/optNonFood"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:fontFamily="@font/work_sans_medium"
+                android:text="@string/newest"
+                android:textColor="@color/textPrimary"
+                android:checked="true"
+                android:textSize="15sp" />
+            <RadioButton
+                android:id="@+id/optFood"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:fontFamily="@font/work_sans_medium"
+                android:text="@string/closest"
+                android:textColor="@color/textPrimary"
+                android:textSize="15sp" />
+        </RadioGroup>
+
+        <Button
+            android:id="@+id/btnAddListing"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:background="@drawable/yellow_border"
+            android:fontFamily="@font/work_sans_bold"
+            android:text="@string/apply"
+            android:textColor="@color/textPrimaryDark"
+            android:textSize="15sp" />
+    </LinearLayout>
+
+</LinearLayout>

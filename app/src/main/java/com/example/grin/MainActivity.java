@@ -37,7 +37,7 @@ public class MainActivity extends AppCompatActivity {
             login_btn=findViewById(R.id.btnMainLogin);
             if(user1.checkIfUserExist())
             {
-                Intent intentDashboard=new Intent(getApplicationContext(), DashBoard.class);
+                Intent intentDashboard=new Intent(getApplicationContext(), MainContainer.class);
                 startActivity(intentDashboard);
                 finish();
             }

@@ -110,8 +110,9 @@ public class AddListtingItem extends AppCompatActivity implements OnMapReadyCall
     ImageView btnBack,imageDisplay;
     Button btnPickImage,btnCaptureImage,btnAddListing;
     RadioButton optFood,optNonFood; // initiate a radio button
+    RadioButton rd_one,rd_two,rd_three,rd_four,rd_five; // initiate a radio button
     Switch wantedListing;
-    TextView itemTitle,desc,quantity,lastDate,pickupTime;
+    TextView itemTitle,desc,lastDate,pickupTime;
     DatePickerDialog datePickerDialog;
 
     FirebaseAuth fAuth;
@@ -130,6 +131,11 @@ public class AddListtingItem extends AppCompatActivity implements OnMapReadyCall
         imageDisplay= findViewById(R.id.itemPicture);
         optFood = (RadioButton) findViewById(R.id.optFood); // initiate a radio button
         optNonFood = (RadioButton) findViewById(R.id.optNonFood); // initiate a radio button
+        rd_one = (RadioButton) findViewById(R.id.rd_one); // initiate a radio button
+        rd_two = (RadioButton) findViewById(R.id.rd_two); // initiate a radio button
+        rd_three = (RadioButton) findViewById(R.id.rd_three); // initiate a radio button
+        rd_four = (RadioButton) findViewById(R.id.rd_four); // initiate a radio button
+        rd_five = (RadioButton) findViewById(R.id.rd_five); // initiate a radio button
         wantedListing=findViewById(R.id.checkType);
         toolbar = findViewById(R.id.addListingToolbar);
         toolbar.setTitle("Add Listing");
@@ -187,7 +193,7 @@ public class AddListtingItem extends AppCompatActivity implements OnMapReadyCall
         btnAddListing.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if ( !validateType() | !validateImagePath() | !validateTitle() | !validateDesc()  | !validateLastDate() | !validatePickupTime() | !validateQuantity()) {
+                if ( !validateType() | !validateImagePath() | !validateTitle() | !validateDesc()  | !validateLastDate() | !validatePickupTime()) {
                     return;
 
                 }
@@ -197,7 +203,12 @@ public class AddListtingItem extends AppCompatActivity implements OnMapReadyCall
                         fAuth = FirebaseAuth.getInstance();
                         if(fAuth.getCurrentUser()!=null) {
                             addListingItem(contentUri);
+
                         }
+                    }
+                    else
+                    {
+                        Toast.makeText(AddListtingItem.this,"You must add an image.",Toast.LENGTH_SHORT).show();
                     }
 
                 }
@@ -205,13 +216,13 @@ public class AddListtingItem extends AppCompatActivity implements OnMapReadyCall
         });
         itemTitle = findViewById(R.id.txtItemTitle);
         desc = findViewById(R.id.txtItemDesc);
-        quantity = findViewById(R.id.txtQuantity);
         pickupTime = findViewById(R.id.txtPickupTime);
         lastDate = findViewById(R.id.txtLastDate);
         lastDate.setInputType(InputType.TYPE_NULL);
         lastDate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                hideSoftKeyboard();
                showDateDialog(lastDate);
             }
         });
@@ -235,22 +246,27 @@ public class AddListtingItem extends AppCompatActivity implements OnMapReadyCall
                         desc.setText(common.desc);
                         lastDate.setText(common.lastDate);
                         pickupTime.setText(common.pickupTime);
-                        quantity.setText(Integer.toString(common.quantity));
                         optFood.setChecked(common.optFood);
                         optNonFood.setChecked(common.optNonFood);
                         wantedListing.setChecked(common.wantedListing);
+                        if(common.quantity==1) {
+                            rd_one.setChecked(true);
+                        } else if(common.quantity==2) {
+                            rd_two.setChecked(true);
+                        } else if(common.quantity==3) {
+                            rd_three.setChecked(true);
+                        } else if(common.quantity==4) {
+                            rd_four.setChecked(true);
+                        } else if(common.quantity==5) {
+                            rd_five.setChecked(true);
+                        }
 
-                    contentUri=common.itemUri;
-                    imageDisplay.setImageURI(contentUri);
-                      /*  if(common.itemUri!=null)
-                        {
+                        if(common.itemUri!=null) {
                             contentUri=common.itemUri;
                             imageDisplay.setImageURI(contentUri);
-                        }
-                        else
-                        {
+                        } else {
                             contentUri=null;
-                        }*/
+                        }
 
                         common.valuesSet=false;
                     }
@@ -329,22 +345,7 @@ public class AddListtingItem extends AppCompatActivity implements OnMapReadyCall
             return true;
         }
     }
-    private Boolean validateQuantity() {
-        String val = quantity.getEditableText().toString();
-        //String noWhiteSpace = "\\A\\w{3,20}\\z";
-        if (val.isEmpty()) {
-            quantity.setError("Quantity can not be blank");
-            return false;
-        }
-        else if(Integer.parseInt(val)<=0 | Integer.parseInt(val)>5){
-            quantity.setError("Quantity should be greater than 0 and less than 5");
-            return false;
-        }
-        else {
-            quantity.setError(null);
-            return true;
-        }
-    }
+
     private Boolean validatePickupTime() {
         String val = pickupTime.getEditableText().toString();
         //String noWhiteSpace = "\\A\\w{3,20}\\z";
@@ -450,12 +451,16 @@ public class AddListtingItem extends AppCompatActivity implements OnMapReadyCall
                 common.desc=desc.getEditableText().toString();
                 common.lastDate=lastDate.getEditableText().toString();
                 common.pickupTime=pickupTime.getEditableText().toString();
-                if(quantity.getEditableText().toString().isEmpty())
-                {
-                    common.quantity=0;
-                }
-                else {
-                    common.quantity = Integer.parseInt(quantity.getEditableText().toString());
+                if(rd_one.isChecked()) {
+                    common.quantity=1;
+                } else if(rd_two.isChecked()) {
+                    common.quantity=2;
+                } else if(rd_three.isChecked()) {
+                    common.quantity=3;
+                } else if(rd_three.isChecked()) {
+                    common.quantity=4;
+                } else if(rd_four.isChecked()) {
+                    common.quantity=5;
                 }
                 common.optFood=optFood.isChecked();
                 common.optNonFood=optNonFood.isChecked();
@@ -485,7 +490,7 @@ public class AddListtingItem extends AppCompatActivity implements OnMapReadyCall
         try {
                     final String title = itemTitle.getEditableText().toString().trim();
                     final String describtion = desc.getEditableText().toString().trim();
-                    final int quan = Integer.parseInt(quantity.getEditableText().toString());
+
                     final String pTime = pickupTime.getEditableText().toString().trim();
                     final String lDate = lastDate.getEditableText().toString().trim();
                     final String wantListing ;
@@ -495,6 +500,7 @@ public class AddListtingItem extends AppCompatActivity implements OnMapReadyCall
                         wantListing = "false";
                     }
                     String itmType = "Not Set";
+
                     final String listingDate = new SimpleDateFormat("dd-MM-yyyy").format(new Date());
                     final String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
                     final String itmUri = firebaseImageUri.toString();
@@ -502,6 +508,21 @@ public class AddListtingItem extends AppCompatActivity implements OnMapReadyCall
                         itmType = "Food";
                     } else if (optNonFood.isChecked() == true) {
                         itmType = "Non-Food";
+                    }
+                    int quantity=0;
+                    if (rd_one.isChecked()) {
+                        quantity=1;
+                    } else if (rd_two.isChecked()) {
+                        quantity=2;
+                    }
+                    else if (rd_three.isChecked()) {
+                        quantity=3;
+                    }
+                    else if (rd_four.isChecked()) {
+                        quantity=4;
+                    }
+                    else if (rd_five.isChecked()) {
+                        quantity=5;
                     }
 
 
@@ -512,7 +533,7 @@ public class AddListtingItem extends AppCompatActivity implements OnMapReadyCall
                         String postId = pushedPostRef.getKey();
 
 
-                        Listing obj = new Listing(title, itmType, describtion, quan, listingDate, pTime, lDate, itmUri, userId,
+                        Listing obj = new Listing(title, itmType, describtion, quantity, listingDate, pTime, lDate, itmUri, userId,
                                 "Listed", 0, 0, 0, wantListing, longitude, latitude);
 
                         reference.child(postId).setValue(obj).addOnCompleteListener(new OnCompleteListener<Void>() {
@@ -536,64 +557,21 @@ public class AddListtingItem extends AppCompatActivity implements OnMapReadyCall
             Toast.makeText(this, "Exception: "+ex.toString(), Toast.LENGTH_SHORT).show();
         }
     }
-/*    private void uploadImageToFirebase(Uri contentUri) {
-        try {
-         getWindow().setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,
-                    WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
-            final ProgressDialog pd= new ProgressDialog(this);
-            pd.setTitle("Adding Item...");
-            pd.show();
 
-            final String   randomKey=UUID.randomUUID().toString();
-            final StorageReference imageRef=FirebaseStorage.getInstance().getReference().child("ListingPic/"+randomKey);
-            imageRef.putFile(contentUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                @Override
-                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                    imageRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-                        @Override
-                        public void onSuccess(Uri uri) {
-                            firebaseImageUri=uri;
-                            addListing();
-                            pd.dismiss();
-                            Snackbar.make(findViewById(android.R.id.content),"Listing Addedd...",Snackbar.LENGTH_LONG).show();
-                            getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
-                        }
-                    });
-                }
-            }).addOnFailureListener(new OnFailureListener() {
-                @Override
-                public void onFailure(@NonNull Exception e) {
-                    pd.dismiss();
-                    Toast.makeText(getApplicationContext(),"Failed To Upload",Toast.LENGTH_LONG).show();
-                }
-            }).addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
-                @Override
-                public void onProgress(@NonNull UploadTask.TaskSnapshot snapshot) {
-                    double progressPercent=(100.00*snapshot.getBytesTransferred()/snapshot.getTotalByteCount());
-                    pd.setMessage("Percentage: "+(int)progressPercent+"%");
-                }
-            });
-        }
-        catch (Exception ex)
-        {
-            Toast.makeText(getApplicationContext(),"Exception:"+ex.toString(),Toast.LENGTH_LONG).show();
-            Log.d("tag","Exception: "+ex.toString());
-        }
-
-    }*/
     private void openSuccessDialog()
     {
         try {
+            dialog=new Dialog(AddListtingItem.this);
             dialog.setContentView(R.layout.success_dialog);
             dialog.getWindow().setBackgroundDrawable(new ColorDrawable(0));
             Button btnOk=dialog.findViewById(R.id.btnOk);
-
             btnOk.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-
                     dialog.dismiss();
-
+                    Intent intent = new Intent(AddListtingItem.this, MainContainer.class);
+                    startActivity(intent);
+                    finish();
                 }
             });
             dialog.show();

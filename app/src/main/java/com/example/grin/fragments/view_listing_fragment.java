@@ -1,12 +1,9 @@
-package com.example.grin;
+package com.example.grin.fragments;
 
-import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager.widget.ViewPager;
 
@@ -14,13 +11,18 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
+import com.example.grin.R;
 import com.example.grin.adapter.ViewPagerAdapter;
 import com.google.android.material.tabs.TabLayout;
-import com.luseen.spacenavigation.SpaceItem;
-import com.luseen.spacenavigation.SpaceNavigationView;
-import com.luseen.spacenavigation.SpaceOnClickListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -78,10 +80,29 @@ public class view_listing_fragment extends Fragment {
         View view= inflater.inflate(R.layout.fragment_view_listing_fragment, container, false);
         return  view;
     }
+    FirebaseDatabase rootnode;
+    DatabaseReference reference;
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         try {
             super.onViewCreated(view, savedInstanceState);
+            final String lastDate = new SimpleDateFormat("dd-MM-yyyy").format(new Date());
+            rootnode= FirebaseDatabase.getInstance();
+            reference=rootnode.getReference("listing");
+            reference.orderByChild("lastDate").equalTo(lastDate).addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot tasksSnapshot) {
+                    for (DataSnapshot snapshot: tasksSnapshot.getChildren()) {
+                        snapshot.getRef().child("status").setValue("Expired");
+                    }
+                }
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+
+                }
+
+
+            });
             // find views by id
             tabLayout=(TabLayout)view.findViewById(R.id.dashboardFragmentTablayout);
             viewPager=(ViewPager)view.findViewById(R.id.dashboardFragmenViewPager);

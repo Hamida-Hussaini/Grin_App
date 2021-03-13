@@ -1,4 +1,4 @@
-package com.example.grin;
+package com.example.grin.fragments;
 
 import android.os.Bundle;
 
@@ -8,12 +8,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.grin.R;
+
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link addListingFragment#newInstance} factory method to
+ * Use the {@link item_request#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class addListingFragment extends Fragment {
+public class item_request extends Fragment {
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -23,9 +25,9 @@ public class addListingFragment extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
-
-    public addListingFragment() {
-        // Required empty public constructor
+    public item_request() {
+    }
+    public item_request(String itemUri,String itemName,String describtion,Double latitude,Double longitude,String ListingDate,String UserId,int noLikes) {
     }
 
     /**
@@ -34,11 +36,11 @@ public class addListingFragment extends Fragment {
      *
      * @param param1 Parameter 1.
      * @param param2 Parameter 2.
-     * @return A new instance of fragment addListingFragment.
+     * @return A new instance of fragment item_request.
      */
     // TODO: Rename and change types and number of parameters
-    public static addListingFragment newInstance(String param1, String param2) {
-        addListingFragment fragment = new addListingFragment();
+    public static item_request newInstance(String param1, String param2) {
+        item_request fragment = new item_request();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -59,6 +61,6 @@ public class addListingFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_add_listing, container, false);
+        return inflater.inflate(R.layout.fragment_item_request, container, false);
     }
 }

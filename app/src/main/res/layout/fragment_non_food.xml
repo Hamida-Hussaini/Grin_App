@@ -3,11 +3,37 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/backgroundColor"
     android:orientation="vertical"
     android:id="@+id/nonfood_view"
-    tools:context=".NonFoodFragment">
-
+    tools:context=".fragments.NonFoodFragment">
+    <LinearLayout
+        android:id="@+id/linearLayout"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:background="@color/item_card"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+        <ImageView
+            android:id="@+id/btnFilter"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:contentDescription="@string/todo"
+            android:paddingStart="10dp"
+            android:paddingLeft="10dp"
+            android:src="@drawable/ic_fillter_settings" />
+        <TextView
+            style="@style/Input_Title"
+            android:id="@+id/lblListingHeading"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:padding="10dp" />
+    </LinearLayout>
     <!-- TODO: Update blank fragment layout -->
     <androidx.recyclerview.widget.RecyclerView
         android:layout_width="match_parent"

@@ -1,4 +1,4 @@
-package com.example.grin;
+package com.example.grin.fragments;
 
 import android.os.Bundle;
 
@@ -11,15 +11,26 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
 
-import com.example.grin.adapter.NonFoodListingAdaptor;
-import com.example.grin.models.ModalClassNonFoodListing;
+import com.example.grin.R;
+import com.example.grin.adapter.NearLocationListingAdapter;
+import com.example.grin.adapter.NearLocationNonFoodListing;
+import com.example.grin.models.ModalClassListing;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.firebase.ui.database.SnapshotParser;
+import com.google.firebase.FirebaseError;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import static android.content.ContentValues.TAG;
 
@@ -39,7 +50,9 @@ public class NonFoodFragment extends Fragment {
     private String mParam2;
     View v;
     RecyclerView recyclerView;
-    NonFoodListingAdaptor nonfoodListingAdapter;
+    TextView lblWantedList;
+
+    NearLocationNonFoodListing nearLocationNonFoodListing;
     public NonFoodFragment() {
         // Required empty public constructor
     }
@@ -72,29 +85,76 @@ public class NonFoodFragment extends Fragment {
     }
 
 
-
+    FirebaseAuth fAuth;
+    FirebaseDatabase rootnode;
+    DatabaseReference reference;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         try {
             v=inflater.inflate(R.layout.fragment_non_food, container, false);
+            ImageView btnSetting=v.findViewById(R.id.btnFilter);
+            lblWantedList=v.findViewById(R.id.lblListingHeading);
+            btnSetting.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                   
+                    new nonFoodBottomDailogFragment().show(getChildFragmentManager(),"Dailog");
+
+                    fAuth = FirebaseAuth.getInstance();
+                    if(fAuth.getCurrentUser()!=null) {
+                        final String userId = fAuth.getCurrentUser().getUid();
+                        rootnode = FirebaseDatabase.getInstance();
+                        reference = rootnode.getReference("NonFoodSetting").child(userId);
+                        reference.addValueEventListener(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                if (snapshot.exists()) {
+                                    String sortBy = snapshot.child("sortBy").getValue(String.class);
+                                    String wantListing = snapshot.child("wantedList").getValue(String.class);
+                                    Double distance= snapshot.child("distance").getValue(Double.class);
+                                    if(wantListing=="true") {
+                                        lblWantedList.setText("Wanted Listing");
+                                    }
+                                    else {
+                                        lblWantedList.setText("");
+                                    }
+                                }
+                                else {
+
+                                }
+                            }
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError error) {
+                            }
+                        });
+                    }
+
+                }
+            });
+
+
+
             recyclerView=v.findViewById(R.id.nonfood_recycler_View);
             recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
             ref=FirebaseDatabase.getInstance().getReference().child("listing");
             Query query = ref.orderByChild("itamType").equalTo("Non-Food");
 
           //  Query query= reference1.orderByChild("wantedList").equalTo(false);
-            FirebaseRecyclerOptions<ModalClassNonFoodListing> options =
-                    new FirebaseRecyclerOptions.Builder<ModalClassNonFoodListing>()
-                            .setQuery(query, new SnapshotParser<ModalClassNonFoodListing>() {
+            FirebaseRecyclerOptions<ModalClassListing> options =
+                    new FirebaseRecyclerOptions.Builder<ModalClassListing>()
+                            .setQuery(query, new SnapshotParser<ModalClassListing>() {
                                 @NonNull
                                 @Override
-                                public ModalClassNonFoodListing parseSnapshot(@NonNull DataSnapshot snapshot) {
+                                public ModalClassListing parseSnapshot(@NonNull DataSnapshot snapshot) {
                                     if(snapshot.exists()) {
-                                        return new ModalClassNonFoodListing(
+                                        return new ModalClassListing(
+                                                snapshot.getKey(),
                                                 snapshot.child("itemName").getValue().toString(),
                                                 snapshot.child("itamType").getValue().toString(),
+                                                snapshot.child("describtion").getValue().toString(),
+                                                snapshot.child("pickupTime").getValue().toString(),
                                                 snapshot.child("itemUri").getValue().toString(),
                                                 snapshot.child("lastDate").getValue().toString(),
                                                 snapshot.child("listingDate").getValue().toString(),
@@ -112,8 +172,8 @@ public class NonFoodFragment extends Fragment {
                                 }
                             })
                             .build();
-            nonfoodListingAdapter = new NonFoodListingAdaptor(options);
-            recyclerView.setAdapter(nonfoodListingAdapter);
+            nearLocationNonFoodListing = new NearLocationNonFoodListing(options);
+            recyclerView.setAdapter(nearLocationNonFoodListing);
         }
         catch (Exception ex)
         {
@@ -126,7 +186,7 @@ public class NonFoodFragment extends Fragment {
     public void onStart() {
         try {
             super.onStart();
-            nonfoodListingAdapter.startListening();
+            nearLocationNonFoodListing.startListening();
         }
         catch (Exception ex)
         {
@@ -138,7 +198,7 @@ public class NonFoodFragment extends Fragment {
     public void onStop() {
         try {
             super.onStop();
-            nonfoodListingAdapter.stopListening();
+            nearLocationNonFoodListing.stopListening();
         }
         catch (Exception ex)
         {

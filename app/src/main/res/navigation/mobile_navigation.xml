@@ -8,19 +8,20 @@
 
     <fragment
         android:id="@+id/nav_home"
-        android:name="com.example.grin.mainDashboardFragment"
+        android:name="com.example.grin.fragments.mainDashboardFragment"
         android:label=""
         tools:layout="@layout/fragment_main_dashboard" />
 
     <fragment
         android:id="@+id/nav_my_location"
-        android:name="com.example.grin.MyLocationFragment"
+        android:name="com.example.grin.fragments.MyLocationFragment"
+        android:label="My Location"
+        tools:layout="@layout/fragment_my_location" />
+    <fragment
+        android:id="@+id/nav_logout"
+        android:name="com.example.grin.MainActivity"
         android:label="My Location"
         tools:layout="@layout/fragment_my_location" />
 
-    <fragment
-        android:id="@+id/nav_add_listing"
-        android:name="com.example.grin.addListingFragment"
-        android:label="Add Listing"
-        tools:layout="@layout/fragment_add_listing" />
+
 </navigation>

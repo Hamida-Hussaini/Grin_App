@@ -1,19 +1,104 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/backgroundColor"
-    tools:context=".FoodListingFragment">
+    android:orientation="vertical"
+    android:id="@+id/nonfood_view"
+    tools:context=".fragments.FoodListingFragment">
+    <LinearLayout
+        android:id="@+id/linearLayout"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:background="@color/item_card"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+        <ImageView
+            android:id="@+id/btnFilter"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:contentDescription="@string/todo"
+            android:paddingStart="10dp"
+            android:paddingLeft="10dp"
+            android:src="@drawable/ic_fillter_settings" />
+        <TextView
+            style="@style/Input_Title"
+            android:id="@+id/lblListingHeading"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:padding="10dp" />
 
-    <!-- TODO: Update blank fragment layout -->
+    </LinearLayout>
+<!--    <TextView-->
+<!--            style="@style/Input_Title"-->
+<!--            android:id="@+id/txtNearListing"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:gravity="center_horizontal"-->
+<!--            android:padding="10dp"-->
+<!--            android:text="@string/near_listing_msg" />-->
+
     <androidx.recyclerview.widget.RecyclerView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginBottom="70dp"
-        android:id="@+id/food_recycler_View"/>
+        android:id="@+id/food_recycler_View">
+
+    </androidx.recyclerview.widget.RecyclerView>
+<!--    <TextView-->
+<!--        style="@style/Input_Title"-->
+<!--        android:id="@+id/txtFurtherLocation"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:gravity="center_horizontal"-->
+<!--        android:text="Listings further away" />-->
+<!--    <androidx.recyclerview.widget.RecyclerView-->
+<!--        android:id="@+id/further_food_recycler_View"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_marginBottom="70dp"/>-->
+
+</LinearLayout>
+<!--<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"-->
+<!--    xmlns:app="http://schemas.android.com/apk/res-auto"-->
+<!--    xmlns:tools="http://schemas.android.com/tools"-->
+<!--    android:layout_width="match_parent"-->
+<!--    android:layout_height="match_parent"-->
+<!--    android:orientation="vertical"-->
+<!--    android:background="@color/backgroundColor"-->
+<!--    tools:context=".fragments.FoodListingFragment">-->
+
+<!--    &lt;!&ndash; TODO: Update blank fragment layout &ndash;&gt;-->
+<!--    <LinearLayout-->
+<!--        android:id="@+id/linearLayout"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="40dp"-->
+<!--        android:orientation="horizontal"-->
+<!--        android:gravity="center_vertical"-->
+<!--        android:background="@color/item_card"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        app:layout_constraintTop_toTopOf="parent">-->
+<!--        <ImageView-->
+<!--            android:id="@+id/btnFilter"-->
+<!--            android:layout_width="30dp"-->
+<!--            android:layout_height="30dp"-->
+<!--            android:contentDescription="@string/todo"-->
+<!--            android:paddingStart="10dp"-->
+<!--            android:paddingLeft="10dp"-->
+<!--            android:src="@drawable/ic_fillter_settings" />-->
+<!--    </LinearLayout>-->
+<!--    <androidx.recyclerview.widget.RecyclerView-->
+<!--        android:id="@+id/food_recycler_View"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"/>-->
 
 
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+<!--</LinearLayout>-->

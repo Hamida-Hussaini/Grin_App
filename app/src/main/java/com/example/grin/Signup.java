@@ -131,7 +131,7 @@ public class Signup extends AppCompatActivity {
             progressBar.setVisibility(View.INVISIBLE);
 
             if (user1.checkIfUserExist()) {
-                Intent intent = new Intent(getApplicationContext(), DashBoard.class);
+                Intent intent = new Intent(getApplicationContext(), MainContainer.class);
                 startActivity(intent);
                 finish();
             }
@@ -181,7 +181,7 @@ public class Signup extends AppCompatActivity {
                             progressBar.setVisibility(View.INVISIBLE);
 
                             Toast.makeText(Signup.this, "User account created successfully.", Toast.LENGTH_SHORT).show();
-                            Intent intent = new Intent(Signup.this, DashBoard.class);
+                            Intent intent = new Intent(Signup.this, MainContainer.class);
                             startActivity(intent);
                             finish();
                         } else {

@@ -21,7 +21,11 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".MainContainer"></activity>
+        <activity android:name=".my_item"></activity>
+        <activity android:name=".ItemRequest" />
+        <activity
+            android:name=".MainContainer"
+            android:screenOrientation="portrait" />
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
              (See the file "res/values/google_maps_api.xml").
@@ -34,16 +38,19 @@
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_maps_key" />
 
-        <activity android:name=".setItemLocation" />
-        <activity android:name=".AddListtingItem" />
+        <activity
+            android:name=".setItemLocation"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".AddListtingItem"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".Signup"
+            android:screenOrientation="portrait"
             android:windowSoftInputMode="stateVisible|adjustResize" />
         <activity
             android:name=".LoginUser"
-            android:windowSoftInputMode="stateVisible|adjustResize" />
-        <activity
-            android:name=".MyLocation"
+            android:screenOrientation="portrait"
             android:windowSoftInputMode="stateVisible|adjustResize" />
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
@@ -57,7 +64,6 @@
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
 
-        <activity android:name=".DashBoard" />
         <activity android:name=".UserProfile" />
         <activity android:name=".MainActivity">
             <intent-filter>

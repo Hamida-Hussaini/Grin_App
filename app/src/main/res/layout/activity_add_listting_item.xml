@@ -181,17 +181,47 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/quantity" />
-
-            <EditText
-                android:id="@+id/txtQuantity"
+            <RadioGroup
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:autofillHints=""
-                android:fontFamily="@font/work_sans_medium"
-                android:hint="@string/quantity"
-                android:inputType="number"
-                android:textColor="@color/textPrimaryDark"
-                android:textSize="15sp" />
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:gravity="center_horizontal"
+                android:orientation="horizontal">
+
+                <RadioButton
+                    android:id="@+id/rd_one"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="1"
+                    android:checked="true"
+                    style="@style/radio_button" />
+                <RadioButton
+                    android:id="@+id/rd_two"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="2"
+                    style="@style/radio_button" />
+                <RadioButton
+                    android:id="@+id/rd_three"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="3"
+                    style="@style/radio_button"/>
+                <RadioButton
+                    android:id="@+id/rd_four"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="4"
+                    style="@style/radio_button"/>
+                <RadioButton
+                    android:id="@+id/rd_five"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="5"
+                    style="@style/radio_button"/>
+            </RadioGroup>
+
 
             <TextView
                 style="@style/Input_Title"

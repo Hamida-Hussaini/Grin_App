@@ -1,7 +1,7 @@
 package com.example.grin.models;
 
-public class ModalClassNonFoodListing {
-    //Uri itemUri;
+public class ModalClassListing {
+    String key;
     String describtion;
     String itamType;
     String itemName;
@@ -21,9 +21,12 @@ public class ModalClassNonFoodListing {
     String userImage;
     String userName;
     String wantedList;
-    public ModalClassNonFoodListing(String itemName,String itamType, String itemUri, String lastDate, String listingDate, String status, String userId, Integer noViews, Double latitude, Double longitude,String wantedList) {
+    public ModalClassListing(String key,String itemName,String itamType,String describtion,String pickupTime, String itemUri, String lastDate, String listingDate, String status, String userId, Integer noViews, Double latitude, Double longitude,String wantedList) {
+        this.key=key;
         this.itamType = itamType;
         this.itemName = itemName;
+        this.describtion=describtion;
+        this.pickupTime=pickupTime;
         this.itemUri = itemUri;
         this.lastDate = lastDate;
         this.listingDate = listingDate;
@@ -35,11 +38,17 @@ public class ModalClassNonFoodListing {
         this.wantedList=wantedList;
 
     }
-    public ModalClassNonFoodListing() {
+    public ModalClassListing() {
 
 
     }
+    public String getKeyId() {
+        return key;
+    }
 
+    public void setKeyId(String key) {
+        this.key = key;
+    }
     public String getDescribtion() {
         return describtion;
     }
@@ -183,7 +192,4 @@ public class ModalClassNonFoodListing {
     public void setWantedList(String wantedList) {
         this.wantedList = wantedList;
     }
-
-
-
 }

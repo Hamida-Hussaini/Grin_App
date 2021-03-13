@@ -1,10 +1,7 @@
 package com.example.grin.Classes;
 
-import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.net.Uri;
-
-import com.example.grin.models.ModalClassFoodListing;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,9 +11,6 @@ public class common {
     public static  Double latitude = null   , longitude = null;
     public static String title;
     public static String desc;
-    public static Bitmap itemPic;
-    public static List<ModalClassFoodListing> modelList=new ArrayList<>();
-
     public static Uri itemUri;
     public static boolean wantedListing;
     public static boolean optFood;
@@ -24,9 +18,10 @@ public class common {
     public static int quantity;
     public static String lastDate;
     public static String pickupTime;
-    public static String listFor;
-    public static String listShowUser;
-    public static int listForPos;
-    public static int listShowUserPos;
+
+    public static String wantedList;
+    public static String sortBy;
+    public static Double distance;
+
 
 }

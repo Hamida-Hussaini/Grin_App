@@ -74,7 +74,7 @@ import java.util.List;
 import java.util.Map;
 
 public class setItemLocation extends AppCompatActivity implements OnMapReadyCallback {
-    private static final String TAG = MyLocation.class.getSimpleName();
+    private static final String TAG = setItemLocation.class.getSimpleName();
     ProgressBar progressBar;
     ImageView marker;
     ImageView btnBack;
@@ -117,8 +117,6 @@ public class setItemLocation extends AppCompatActivity implements OnMapReadyCall
         setContentView(R.layout.activity_set_item_location);
 
         progressBar = findViewById(R.id.loginProgress);
-        drawerLayout=findViewById(R.id.drawer_layout);
-        navigationView=findViewById(R.id.nav_view);
 
         toolbar = findViewById(R.id.main_toolbar);
         toolbar.setTitle("Set Pickup Location");
